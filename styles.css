@@ -1,35 +1,51 @@
 html {
-	font-family: 'Josefin Slab', sans-serif;
-	background-color: #00d790;
+	background-color: #2d2d2c;
 	color: white;
 	height: 100%;
 	width: 100%;
+}
 
-	font-size: 40px;
+h1 {
+	color: #00d790;
+}
+
+#header {
+	color: #efefef;
 }
 
 body {
+	background-color: #2d2d2c;
+	width: auto;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
+  z-index: 1;
+  overflow: hidden;	
+  font-family: 'Josefin Slab', sans-serif !important;	
+}
+
+body, h1 {
+	  font-size: 300% !important;
 }
 
 .counter-heaven {
+	color: white;
 	text-align: center;
 	margin: 0 auto 0 auto;
+	width: 100%;
 }
 
 .button-box {
-	width: 150px;
-	height: 150px;
-	margin: 10px;
+	width: 10%;
+	height: 10%;
+	margin: 30px 0px 30px 0px;
 	display: inline-block;
 	vertical-align: middle;
 }
 
 .custom-button {
-	font-size: 50px;
+	font-size: 2.2em;
 	background: none;
 	color: white;
 	border: none;
@@ -38,15 +54,76 @@ body {
 
 .custom-button:focus {
 	outline: none;
-	-webkit-transition: 0.05s ease-in-out;
-	-o-transition: 0.05s ease-in-out;
-	transition: 0.05s ease-in-out;
+	-webkit-transition: 0.025s ease-in-out;
+	-o-transition: 0.025s ease-in-out;
+	transition: 0.025s ease-in-out;
 }
 
 .custom-button:active {
-	font-size: 45px;
+	font-size: 1.95em;
 }
 
+.circles, .circles-2 {
+	transform: rotate(-50deg);
+	position: absolute;
+	z-index: 1001;
+	overflow: hidden;
+	height: auto;
+	width: auto;
+}
+
+.circles {
+	left: 12%;
+	bottom: -90%;
+}
+
+.circles-2 {
+	right: 2%;
+	top: -100%;
+}
+
+.circle, .circle-2 {
+	height: 2.8em;
+	width: 2.8em;
+	background-color: #00d790;
+	border-radius: 50%;
+	margin-bottom: 150px;
+}
+
+.circle-2 {
+	height: 130px;
+	width: 130px;
+}
+
+@media screen and (max-width: 870px) {
+	body, h1 {
+	  font-size: 250% !important;
+	}
+
+	.custom-button {
+		font-size: 3em;
+	}
+
+	.custom-button:active {
+		font-size: 2.95em;
+	}
+
+
+	.circle, .circle-2 {
+		height: 2em;
+		width: 2em;
+	}
+
+	.circles {
+		left: 12%;
+		bottom: -95%;
+	}
+
+	.circles-2 {
+		right: -20%;
+		top: -110%;
+	}
+}
 
 /*
 	melon: #00d790;
