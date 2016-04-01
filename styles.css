@@ -32,9 +32,9 @@ body {
 }
 
 .button-box {
-	width: 150px;
-	height: 150px;
-	margin: 10px;
+	width: 10%;
+	height: 10%;
+	margin: 2%;
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -63,6 +63,8 @@ body {
 	position: absolute;
 	z-index: 1001;
 	overflow: hidden;
+	height: auto;
+	width: auto;
 }
 
 .circles {
@@ -86,6 +88,23 @@ body {
 .circle-2 {
 	height: 130px;
 	width: 130px;
+}
+
+@media screen and (max-width: 870px) {
+	.circle, .circle-2 {
+		height: 2em;
+		width: 2em;
+	}
+
+	.circles {
+		left: 12%;
+		bottom: -95%;
+	}
+
+	.circles-2 {
+		right: -20%;
+		top: -110%;
+	}
 }
 
 /*
