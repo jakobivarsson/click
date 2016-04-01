@@ -3,6 +3,7 @@ var header = document.getElementById("header");
 var plusButton = document.getElementById("counter");
 var minusButton = document.getElementById("downcounter");
 var progress = document.getElementById("progress");
+var building = document.getElementById("building")
 
 // Colors
 var melon =  "#00d790";
@@ -13,32 +14,56 @@ var lightGray = "#efefef"
 var disabledColor = "#ccc";
 var enabledColor = lightGray;
 
-var exampleSocket = new WebSocket("ws://130.229.149.207:8000/counters/Nymble");
+var counters = []
 
-exampleSocket.onmessage = function(msg) {
-	var response = msg.data;
-	updateCounter(response);
-	header.innerHTML = response;
+var ip = "130.229.149.207:8000"
+var socket;
+var countersPath = "http://" + ip + "/counters"
+
+var getCounters = new XMLHttpRequest();
+getCounters.open('GET', countersPath, true);
+
+getCounters.onload = function() {
+  if (getCounters.status >= 200 && getCounters.status < 400) {
+    counters = JSON.parse(getCounters.responseText);
+    setBuilding(counters[1]);
+  } else {
+    console.log("error fetching counters")
+  }
 };
 
-exampleSocket.onopen = function(e) {
-	console.log("Socket open y'all");
-	enableButtons([plusButton], [true]);
-	if (count == 0)
-		enableButtons([minusButton], [true]); // Disable the minus button
-	else 
-		enableButtons([minusButton], [true]);
-};
+getCounters.send();
+
+function setBuilding(counterName) {
+	building.innerHTML = counterName
+
+	socket = new WebSocket("ws://" + ip + "/counters/" + counterName);
+
+	socket.onmessage = function(msg) {
+		var response = msg.data;
+		updateCounter(response);
+		header.innerHTML = response;
+	};
+
+	socket.onopen = function(e) {
+		console.log("Socket open y'all");
+		enableButtons([plusButton], [true]);
+		if (count == 0)
+			enableButtons([minusButton], [true]); // Disable the minus button
+		else 
+			enableButtons([minusButton], [true]);
+	};
+}
 
 var count = 0;
 plusButton.onclick = function() {
 	updateCounter(++count);
-	exampleSocket.send("increment");
+	socket.send("increment");
 };
 
 minusButton.onclick = function() {
 	updateCounter(--count);
-	exampleSocket.send("decrement");
+	socket.send("decrement");
 };
 
 function updateCounter(val) {
@@ -51,7 +76,7 @@ function updateCounter(val) {
 		minusButton.style.color = white;
 	}
 
-	exampleSocket.send(val);
+	socket.send(val);
 }
 
 
@@ -68,7 +93,6 @@ function enableButtons(buttonsArray, enabledArray) {
 
 // Disable the buttons (reenable once socket has connected)
 enableButtons([minusButton, plusButton], [false, false]);
-
 
 // Listen to right and left buttons
 document.onkeydown = function(e) {

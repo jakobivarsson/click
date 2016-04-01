@@ -67,6 +67,7 @@ func handler(ws *websocket.Conn) {
 }
 
 func getCounters(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(server.GetCounterNames())
 }
 
@@ -82,4 +83,5 @@ func postCounters(w http.ResponseWriter, r *http.Request) {
 	}
 
 	server.AddCounter(name)
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 }
