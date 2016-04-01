@@ -29,7 +29,7 @@ body {
 }
 
 .custom-button {
-	font-size: 50px;
+	font-size: 2em;
 	background: none;
 	color: white;
 	border: none;
@@ -38,13 +38,13 @@ body {
 
 .custom-button:focus {
 	outline: none;
-	-webkit-transition: 0.05s ease-in-out;
-	-o-transition: 0.05s ease-in-out;
-	transition: 0.05s ease-in-out;
+	-webkit-transition: 0.025s ease-in-out;
+	-o-transition: 0.025s ease-in-out;
+	transition: 0.025s ease-in-out;
 }
 
 .custom-button:active {
-	font-size: 45px;
+	font-size: 1.90em;
 }
 
 /*
