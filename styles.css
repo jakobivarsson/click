@@ -15,7 +15,7 @@ h1 {
 
 body {
 	background-color: #2d2d2c;
-	width: 100vw;
+	width: auto;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -96,6 +96,19 @@ body, h1 {
 }
 
 @media screen and (max-width: 870px) {
+	body, h1 {
+	  font-size: 250% !important;
+	}
+
+	.custom-button {
+		font-size: 3em;
+	}
+
+	.custom-button:active {
+		font-size: 2.95em;
+	}
+
+
 	.circle, .circle-2 {
 		height: 2em;
 		width: 2em;
