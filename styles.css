@@ -1,0 +1,55 @@
+html {
+	font-family: 'Josefin Slab', sans-serif;
+	background-color: #00d790;
+	color: white;
+	height: 100%;
+	width: 100%;
+
+	font-size: 40px;
+}
+
+body {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.counter-heaven {
+	text-align: center;
+	margin: 0 auto 0 auto;
+}
+
+.button-box {
+	width: 150px;
+	height: 150px;
+	margin: 10px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.custom-button {
+	font-size: 50px;
+	background: none;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.custom-button:focus {
+	outline: none;
+	-webkit-transition: 0.05s ease-in-out;
+	-o-transition: 0.05s ease-in-out;
+	transition: 0.05s ease-in-out;
+}
+
+.custom-button:active {
+	font-size: 45px;
+}
+
+
+/*
+	melon: #00d790;
+	grape: #e73953;
+	licorice: #2d2d2c;
+*/
