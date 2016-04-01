@@ -1,6 +1,6 @@
 // HTML Elements
 var header = document.getElementById("header");
-var plusbutton = document.getElementById("counter");
+var plusButton = document.getElementById("counter");
 var minusButton = document.getElementById("downcounter");
 var progress = document.getElementById("progress");
 
@@ -21,15 +21,15 @@ exampleSocket.onmessage = function(msg) {
 
 exampleSocket.onopen = function() {
 	console.log("Socket open y'all")
-	enableButtons([plusbutton], [true]);
+	enableButtons([plusButton], [true]);
 	if (count == 0)
-		enableButtons([minusbutton], [true]); // Disable the minus button
+		enableButtons([minusButton], [true]); // Disable the minus button
 	else 
-		enableButtons([minusbutton], [true]);
+		enableButtons([minusButton], [true]);
 };
 
 var count = 0;
-plusbutton.onclick = function() {
+plusButton.onclick = function() {
 	updateCounter(++count);
 	console.log("hello");
 };
@@ -64,4 +64,4 @@ function enableButtons(buttonsArray, enabledArray) {
 
 
 // Disable the buttons (reenable once socket has connected)
-enableButtons([minusButton, plusbutton], [false, false]);
+enableButtons([minusButton, plusButton], [false, false]);
