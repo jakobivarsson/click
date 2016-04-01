@@ -65,3 +65,15 @@ function enableButtons(buttonsArray, enabledArray) {
 
 // Disable the buttons (reenable once socket has connected)
 enableButtons([minusButton, plusButton], [false, false]);
+
+
+// Listen to right and left buttons
+document.onkeydown = function(e) {
+    if (e.keyCode === 39) {
+    	if (plusButton.enabled)
+    	plusButton.click();
+    } else if (e.keyCode === 37) {
+    	if (minusButton.enabled)
+    		minusButton.click();
+    }
+};
