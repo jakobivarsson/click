@@ -6,7 +6,6 @@ html {
 	width: 100%;
 
 	font-size: 250%;
-	overflow: hidden;
 }
 
 h1 {
@@ -18,13 +17,14 @@ h1 {
 }
 
 body {
-	width: auto;
-	height: auto;
+	background-color: #2d2d2c;
+	width: 100vw;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
   z-index: 1;
+  overflow: hidden;	
 }
 
 .counter-heaven {
