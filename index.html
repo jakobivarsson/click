@@ -5,52 +5,28 @@
 	<title>Document</title>
 </head>
 
-<style>
-	html {
-		font-family: sans-serif;
-	}
-</style>
-
+<link rel="stylesheet" href="styles.css">
+<link href='https://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
 
 <body>
 	
-	<h1 id="header"></h1>
-	
-	
-  <button id="counter">+</button>
-	<button id="downCounter">-</button>
+		<h1 id="building">Nymble</h1>
 
+		<div class="counter-heaven">
+			
+			<h1 id="header">0</h1>
+
+	  	<span class="button-box">
+	  		<button id="counter" class="custom-button">+</button>
+	  	</span>
+	  	<span class="button-box">
+	  		<button id="downcounter" class="custom-button">-</button>
+	  	</span>
+		</div>	
+
+	
 </body>
 
-<script>
-	var header = document.getElementById("header");
-	var addbutton = document.getElementById("counter");
-	var minusButton = document.getElementById("downCounter")
-
-	var exampleSocket = new WebSocket("ws://echo.websocket.org");
-
-	exampleSocket.onmessage = function(msg) {
-		var response = msg.data;
-		header.innerHTML = response;
-	};
-
-	exampleSocket.onopen = function() {
-		console.log(exampleSocket)
-		exampleSocket.send("Hello Dude!");
-	};
-
-	var count = 0;
-	addbutton.onclick = function() {
-		exampleSocket.send(++count);
-	};
-	minusButton.onclick = function() {
-		exampleSocket.send(--count);
-	};
-
-
-
-
-	
-</script>
+	<script src="clicker.js"/></script>
 
 </html>
