@@ -13,7 +13,7 @@ var lightGray = "#efefef"
 var disabledColor = "#ccc";
 var enabledColor = lightGray;
 
-var exampleSocket = new WebSocket("ws://130.229.149.207:8000");
+var exampleSocket = new WebSocket("ws://130.229.149.207:8000/counters/Nymble");
 
 exampleSocket.onmessage = function(msg) {
 	var response = msg.data;
