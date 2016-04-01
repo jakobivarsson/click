@@ -12,7 +12,7 @@ var white = "#fff";
 var disabledColor = "#ccc";
 var enabledColor = white;
 
-var exampleSocket = new WebSocket("ws://echo.websocket.org");
+var exampleSocket = new WebSocket("ws://130.229.149.207:8000");
 
 exampleSocket.onmessage = function(msg) {
 	var response = msg.data;
@@ -31,11 +31,12 @@ exampleSocket.onopen = function() {
 var count = 0;
 plusButton.onclick = function() {
 	updateCounter(++count);
-	console.log("hello");
+	exampleSocket.send("increment");
 };
 
 minusButton.onclick = function() {
 	updateCounter(--count);
+	exampleSocket.send("decrement");
 };
 
 function updateCounter(val) {
