@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+
+<style>
+	html {
+		font-family: sans-serif;
+	}
+</style>
+
+
+<body>
+	
+	<h1 id="header"></h1>
+	
+	
+  <button id="counter">+</button>
+	<button id="downCounter">-</button>
+
+</body>
+
+<script>
+	var header = document.getElementById("header");
+	var addbutton = document.getElementById("counter");
+	var minusButton = document.getElementById("downCounter")
+
+	var exampleSocket = new WebSocket("ws://echo.websocket.org");
+
+	exampleSocket.onmessage = function(msg) {
+		var response = msg.data;
+		header.innerHTML = response;
+	};
+
+	exampleSocket.onopen = function() {
+		console.log(exampleSocket)
+		exampleSocket.send("Hello Dude!");
+	};
+
+	var count = 0;
+	addbutton.onclick = function() {
+		exampleSocket.send(++count);
+	};
+	minusButton.onclick = function() {
+		exampleSocket.send(--count);
+	};
+
+
+
+
+	
+</script>
+
+</html>
