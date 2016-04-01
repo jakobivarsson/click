@@ -1,6 +1,6 @@
 html {
 	font-family: 'Josefin Slab', sans-serif;
-	background-color: #00d790;
+	background-color: #2d2d2c;
 	color: white;
 	height: 100%;
 	width: 100%;
@@ -8,14 +8,25 @@ html {
 	font-size: 2.5em;
 }
 
+h1 {
+	color: #00d790;
+}
+
+#header {
+	color: #efefef;
+}
+
 body {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .counter-heaven {
+	color: white;
 	text-align: center;
 	margin: 0 auto 0 auto;
 }
@@ -44,7 +55,37 @@ body {
 }
 
 .custom-button:active {
-	font-size: 1.90em;
+	font-size: 1.95em;
+}
+
+.circles, .circles-2 {
+	transform: rotate(-50deg);
+	position: absolute;
+	z-index: 1001;
+	overflow: hidden;
+}
+
+.circles {
+	left: 12%;
+	bottom: -90%;
+}
+
+.circles-2 {
+	right: 2%;
+	top: -100%;
+}
+
+.circle, .circle-2 {
+	height: 100px;
+	width: 100px;
+	background-color: #00d790;
+	border-radius: 50%;
+	margin-bottom: 150px;
+}
+
+.circle-2 {
+	height: 130px;
+	width: 130px;
 }
 
 /*

@@ -9,18 +9,20 @@ var melon =  "#00d790";
 var grape =  "#e73953";
 var licorice = "#2d2d2c";
 var white = "#fff";
+var lightGray = "#efefef"
 var disabledColor = "#ccc";
-var enabledColor = white;
+var enabledColor = lightGray;
 
 var exampleSocket = new WebSocket("ws://130.229.149.207:8000");
 
 exampleSocket.onmessage = function(msg) {
 	var response = msg.data;
+	updateCounter(response)
 	header.innerHTML = response;
 };
 
-exampleSocket.onopen = function() {
-	console.log("Socket open y'all")
+exampleSocket.onopen = function(e) {
+	console.log("Socket open y'all");
 	enableButtons([plusButton], [true]);
 	if (count == 0)
 		enableButtons([minusButton], [true]); // Disable the minus button
