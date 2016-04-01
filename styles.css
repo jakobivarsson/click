@@ -62,6 +62,7 @@ body {
 	transform: rotate(-50deg);
 	position: absolute;
 	z-index: 1001;
+	overflow: hidden;
 }
 
 .circles {
