@@ -1,5 +1,4 @@
 html {
-	font-family: 'Josefin Slab', sans-serif;
 	background-color: #2d2d2c;
 	color: white;
 	height: 100%;
@@ -23,6 +22,7 @@ body {
   text-align: center;
   z-index: 1;
   overflow: hidden;	
+  font-family: 'Josefin Slab', sans-serif !important;	
 }
 
 body, h1 {
@@ -39,7 +39,7 @@ body, h1 {
 .button-box {
 	width: 10%;
 	height: 10%;
-	margin: 2%;
+	margin: 50px;
 	display: inline-block;
 	vertical-align: middle;
 }
