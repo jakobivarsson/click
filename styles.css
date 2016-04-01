@@ -4,8 +4,6 @@ html {
 	color: white;
 	height: 100%;
 	width: 100%;
-
-	font-size: 250%;
 }
 
 h1 {
@@ -25,6 +23,10 @@ body {
   text-align: center;
   z-index: 1;
   overflow: hidden;	
+}
+
+body, h1 {
+	  font-size: 300% !important;
 }
 
 .counter-heaven {
