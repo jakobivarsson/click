@@ -5,7 +5,8 @@ html {
 	height: 100%;
 	width: 100%;
 
-	font-size: 2.5em;
+	font-size: 250%;
+	overflow: hidden;
 }
 
 h1 {
@@ -22,7 +23,6 @@ body {
   transform: translateY(-50%);
   text-align: center;
   z-index: 1;
-  overflow: hidden;
 }
 
 .counter-heaven {
@@ -62,7 +62,6 @@ body {
 	transform: rotate(-50deg);
 	position: absolute;
 	z-index: 1001;
-	overflow: hidden;
 }
 
 .circles {
@@ -76,8 +75,8 @@ body {
 }
 
 .circle, .circle-2 {
-	height: 100px;
-	width: 100px;
+	height: 2.8em;
+	width: 2.8em;
 	background-color: #00d790;
 	border-radius: 50%;
 	margin-bottom: 150px;

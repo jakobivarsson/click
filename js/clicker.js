@@ -17,7 +17,7 @@ var exampleSocket = new WebSocket("ws://130.229.149.207:8000");
 
 exampleSocket.onmessage = function(msg) {
 	var response = msg.data;
-	updateCounter(response)
+	updateCounter(response);
 	header.innerHTML = response;
 };
 
@@ -74,7 +74,7 @@ enableButtons([minusButton, plusButton], [false, false]);
 document.onkeydown = function(e) {
     if (e.keyCode === 39) {
     	if (plusButton.enabled)
-    	plusButton.click();
+    		plusButton.click();
     } else if (e.keyCode === 37) {
     	if (minusButton.enabled)
     		minusButton.click();
