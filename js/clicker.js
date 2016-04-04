@@ -16,7 +16,7 @@ var enabledColor = lightGray;
 
 var counters = []
 
-var ip = "130.229.149.207:8000"
+var ip = "localhost:8000"
 var socket;
 var countersPath = "http://" + ip + "/counters"
 
@@ -75,8 +75,6 @@ function updateCounter(val) {
 		minusButton.disabled = false
 		minusButton.style.color = white;
 	}
-
-	socket.send(val);
 }
 
 

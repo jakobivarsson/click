@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"golang.org/x/net/websocket"
 	"net/http"
@@ -49,7 +50,8 @@ func main() {
 	r.HandleFunc("/counters", postCounters).Methods("POST")
 
 	http.Handle("/", r)
-	http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8000", nil)
+	fmt.Println("Server error:", err)
 }
 
 func handler(ws *websocket.Conn) {
