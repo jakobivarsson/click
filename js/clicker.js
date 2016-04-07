@@ -26,7 +26,7 @@ getCounters.open('GET', countersPath, true);
 getCounters.onload = function() {
   if (getCounters.status >= 200 && getCounters.status < 400) {
     counters = JSON.parse(getCounters.responseText);
-    setBuilding(counters[1]);
+    setBuilding(counters[0]);
   } else {
     console.log("error fetching counters")
   }
@@ -50,7 +50,7 @@ function setBuilding(counterName) {
 		enableButtons([plusButton], [true]);
 		if (count == 0)
 			enableButtons([minusButton], [true]); // Disable the minus button
-		else 
+		else
 			enableButtons([minusButton], [true]);
 	};
 }
@@ -69,7 +69,7 @@ minusButton.onclick = function() {
 function updateCounter(val) {
 	if (val == 0) {
 		minusButton.disabled = true
-		minusButton.style.color = disabledColor;	
+		minusButton.style.color = disabledColor;
 	}
 	else {
 		minusButton.disabled = false
@@ -83,7 +83,7 @@ function enableButtons(buttonsArray, enabledArray) {
 		buttonsArray[i].enabled = enabledArray[i];
 		if (enabledArray[i])
 			buttonsArray[i].style.color = enabledColor
-		else 
+		else
 			buttonsArray[i].style.color = disabledColor;
 	}
 }
