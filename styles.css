@@ -26,7 +26,7 @@ body {
 }
 
 body, h1 {
-	  font-size: 300% !important;
+	  font-size: 225% !important;
 }
 
 .counter-heaven {
@@ -97,17 +97,20 @@ body, h1 {
 
 @media screen and (max-width: 870px) {
 	body, h1 {
-	  font-size: 250% !important;
-	}
+	  font-size: 200% !important;
+	} 
 
 	.custom-button {
 		font-size: 3em;
 	}
 
+	.button-box {
+		margin: 5%;
+	}
+
 	.custom-button:active {
 		font-size: 2.95em;
 	}
-
 
 	.circle, .circle-2 {
 		height: 2em;
