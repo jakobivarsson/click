@@ -21,40 +21,40 @@
 		<div class="row">
 			<div class="col-sm-12 text-center">
 				<div class="counter-heaven">
-				
+
 					<h1 id="header">0</h1>
-			
-				</div>	
+
+				</div>
 			</div>
-			
+
 		</div>
-		
-	
+
+
 		<div class="row">
 			<div class="col-sm-12 text-center">
 				<div class="counter-heaven">
-				
+
 					<span class="button-box">
 			  		<button id="downcounter" class="custom-button">-</button>
 			  	</span>
 			  	<span class="button-box">
 			  		<button id="counter" class="custom-button">+</button>
 			  	</span>
-			
-				</div>	
+
+				</div>
 			</div>
 
 			<!-- <div class="col-sm-1 text-center">
 				<div class="counter-heaven">
-				
-					
-			  
-				</div>	
+
+
+
+				</div>
 			</div> -->
-	
+
 		</div>
 
-		
+
 		<div class="circles">
 			<div class="circle"></div>
 			<div class="circle"></div>
@@ -66,11 +66,22 @@
 			<div class="circle-2"></div>
 			<div class="circle-2"></div>
 		</div>
-		
+
 </body>
 
 
 
 	<script src="js/clicker.js"/></script>
+	<script type="text/javascript">
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('/sw.js').then(function(registration) {
+			// Registration was successful
+			console.log('ServiceWorker registration successful with scope: ',    registration.scope);
+		}).catch(function(err) {
+			// registration failed :(
+			console.log('ServiceWorker registration failed: ', err);
+		});
+	}
+	</script>
 
 </html>
