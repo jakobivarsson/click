@@ -16,7 +16,7 @@ var enabledColor = lightGray;
 
 var counters = []
 
-var ip = "localhost:8000"
+var ip = "192.168.1.142:8000"
 var socket;
 var countersPath = "http://" + ip + "/counters"
 
