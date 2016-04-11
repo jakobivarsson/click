@@ -33,6 +33,11 @@ getCounters.onload = function() {
   }
 };
 
+getCounters.onerror = function () {
+  setOffline();
+  console.log("error yAO");
+}
+
 getCounters.send();
 
 function setBuilding(counterName) {
