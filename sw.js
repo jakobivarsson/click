@@ -1,6 +1,6 @@
 importScripts('node_modules/sw-toolbox/sw-toolbox.js');
 
-toolbox.options.debug = true;
+toolbox.options.debug = false;
 
 toolbox.precache(['/']);
 // toolbox.router.get('/(.*)', toolbox.fastest);

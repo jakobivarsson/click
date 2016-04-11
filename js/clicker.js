@@ -12,11 +12,12 @@ var licorice = "#2d2d2c";
 var white = "#fff";
 var lightGray = "#efefef"
 var disabledColor = "#ccc";
+var errorRed = "#f44336"
 var enabledColor = lightGray;
 
 var counters = []
 
-var ip = "192.168.1.142:8000"
+var ip = "127.0.0.1:8000"
 var socket;
 var countersPath = "http://" + ip + "/counters"
 
@@ -45,11 +46,23 @@ function setBuilding(counterName) {
 		header.innerHTML = response;
 	};
 
+  socket.onerror = function(e) {
+    console.log("ERROORRLOL");
+    enableButtons([plusButton, minusButton], [false,false]);
+    setOffline();
+  }
+
+  socket.onclose = function(e) {
+    console.log("uuooh kefft close event yao");
+    enableButtons([plusButton, minusButton], [false,false]);
+    setOffline();
+  }
+
 	socket.onopen = function(e) {
 		console.log("Socket open y'all");
 		enableButtons([plusButton], [true]);
 		if (count == 0)
-			enableButtons([minusButton], [true]); // Disable the minus button
+			enableButtons([minusButton], [false]); // Disable the minus button
 		else
 			enableButtons([minusButton], [true]);
 	};
@@ -86,6 +99,18 @@ function enableButtons(buttonsArray, enabledArray) {
 		else
 			buttonsArray[i].style.color = disabledColor;
 	}
+}
+
+function setOffline () {
+  let c1 = document.getElementsByClassName("circle");
+  let c2 = document.getElementsByClassName("circle-2");
+  for (var i = 0; i < c1.length; i++) {
+    c1[i].style.backgroundColor = errorRed;
+  }
+  for (var i = 0; i < c2.length; i++) {
+    c2[i].style.backgroundColor = errorRed;
+  }
+  document.getElementById("offline-message").style.display = "block";
 }
 
 
