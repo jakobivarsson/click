@@ -21,8 +21,8 @@ body {
   transform: translateY(-50%);
   text-align: center;
   z-index: 1;
-  overflow: hidden;	
-  font-family: 'Josefin Slab', sans-serif !important;	
+  overflow: hidden;
+  font-family: 'Josefin Slab', sans-serif !important;
 }
 
 body, h1 {
@@ -95,10 +95,25 @@ body, h1 {
 	width: 130px;
 }
 
+.disconnected {
+	display: none;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+  padding: 15px;
+	right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 3px;
+  position: fixed;
+  z-index: 10000;
+}
+
 @media screen and (max-width: 870px) {
 	body, h1 {
 	  font-size: 200% !important;
-	} 
+	}
 
 	.custom-button {
 		font-size: 3em;
