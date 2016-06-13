@@ -45,7 +45,7 @@ func main() {
 	server.AddCounter("Nymble")
 
 	r := mux.NewRouter()
-	r.Handle("/counters/{key}", websocket.Handler(handler))
+	r.Handle("/counters/{key}", websocket.Handler(wsHandler))
 	r.HandleFunc("/counters", getCounters).Methods("GET")
 	r.HandleFunc("/counters", postCounters).Methods("POST")
 
@@ -54,7 +54,7 @@ func main() {
 	fmt.Println("Server error:", err)
 }
 
-func handler(ws *websocket.Conn) {
+func wsHandler(ws *websocket.Conn) {
 	vars := mux.Vars(ws.Request())
 	name := vars["key"]
 	counter := server.GetCounter(name)
@@ -64,7 +64,6 @@ func handler(ws *websocket.Conn) {
 	}
 
 	client := NewClient(ws, counter)
-	counter.AddClient(client)
 	client.Listen()
 }
 

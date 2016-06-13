@@ -14,13 +14,17 @@ type Client struct {
 	counter *Counter
 }
 
+// Creates a new client
 func NewClient(ws *websocket.Conn, counter *Counter) *Client {
 	update := make(chan int)
 	done := make(chan bool)
 	return &Client{ws, update, done, counter}
 }
 
+// Registers the client to its counter
+// and listens for updates from ws and counter
 func (c *Client) Listen() {
+	c.counter.Register <- c
 	websocket.Message.Send(c.ws, strconv.Itoa(c.counter.counter))
 	go c.write()
 	c.read()
@@ -31,7 +35,7 @@ func (c *Client) read() {
 	for {
 		err := websocket.Message.Receive(c.ws, &data)
 		if err == io.EOF {
-			c.counter.RemoveClient(c)
+			c.counter.Unregister <- c
 			return
 		} else if err != nil {
 			fmt.Println("Error:", err)
