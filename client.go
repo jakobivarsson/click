@@ -10,15 +10,13 @@ import (
 type Client struct {
 	ws      *websocket.Conn
 	Update  chan int
-	Done    chan bool
 	counter *Counter
 }
 
 // Creates a new client
 func NewClient(ws *websocket.Conn, counter *Counter) *Client {
 	update := make(chan int)
-	done := make(chan bool)
-	return &Client{ws, update, done, counter}
+	return &Client{ws, update, counter}
 }
 
 // Registers the client to its counter
@@ -54,15 +52,14 @@ func (c *Client) read() {
 
 func (c *Client) write() {
 	for {
-		select {
-		case message := <-c.Update:
+		message, more := <-c.Update
+		if more {
 			fmt.Println("Sending message:", message)
 			if err := websocket.Message.Send(c.ws, strconv.Itoa(message)); err != nil {
 				fmt.Println("Error sending message:", err)
 				continue
 			}
-		case <-c.Done:
-			fmt.Println("work done!")
+		} else {
 			return
 		}
 	}

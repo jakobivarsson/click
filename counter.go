@@ -64,5 +64,5 @@ func (c *Counter) removeClient(client *Client) {
 		}
 	}
 	c.clients = append(c.clients[:index], c.clients[index+1:]...)
-	client.Done <- true
+	close(client.Update)
 }
