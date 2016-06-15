@@ -50,7 +50,7 @@ func main() {
 	r.HandleFunc("/counters", postCounters).Methods("POST")
 
 	http.Handle("/", r)
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8008", nil)
 	fmt.Println("Server error:", err)
 }
 
