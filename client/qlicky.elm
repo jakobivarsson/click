@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.App as Html
 import Html.Events exposing (..)
 import Http
 import Json.Decode exposing (..)
@@ -18,7 +17,7 @@ import WebSocket
 
 
 main =
-    Navigation.program
+    Navigation.program (Navigation.makeParser urlParser)
         { init = init
         , view = view
         , update = update
@@ -36,8 +35,40 @@ type Page
     | Clicker String
 
 
+toUrl page =
+    case page of
+        Index ->
+            ""
+
+        Clicker name ->
+            "/" ++ name
+
+
+urlParser location =
+    UrlParser.parse identity pageParser location.pathname
+
+
 pageParser =
-    "hello"
+    UrlParser.oneOf
+        [ format Index (UrlParser.s "")
+        , format Clicker (UrlParser.s "" </> UrlParser.string)
+        ]
+
+
+urlUpdate result model =
+    case result of
+        Err _ ->
+            ( model, Navigation.modifyUrl (toUrl model.page) )
+
+        Ok Index ->
+            ( { model | page = Index }, getCounters )
+
+        Ok page ->
+            ( { model | page = page }, Cmd.none )
+
+
+
+-- MODEL
 
 
 server : String
@@ -45,14 +76,11 @@ server =
     "ws://localhost:8008/counters/Nymble"
 
 
-
--- MODEL
-
-
 type alias Model =
     { counter : Counter
     , counters : List String
     , authenticated : Bool
+    , page : Page
     }
 
 
@@ -62,9 +90,9 @@ type alias Counter =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( Model (Counter "Nymble" 0) [] True, getCounters )
+init : Result String Page -> ( Model, Cmd Msg )
+init result =
+    urlUpdate result (Model (Counter "Nymble" 0) [] True Index)
 
 
 
