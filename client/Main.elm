@@ -1,23 +1,22 @@
 module Main exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http
 import Json.Decode exposing (..)
 import Keyboard
 import List
 import Maybe
-import Navigation
 import Platform.Sub
 import Result
 import String
 import Task
-import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
 import WebSocket
 
 
 main =
-    Navigation.program (Navigation.makeParser urlParser)
+    Navigation.program (Navigation.makeParser hashParser)
         { init = init
         , view = view
         , update = update
@@ -28,46 +27,6 @@ main =
 
 
 -- URL PARSERS
-
-
-type Page
-    = Index
-    | Clicker String
-
-
-toUrl page =
-    case page of
-        Index ->
-            "/"
-
-        Clicker name ->
-            "/" ++ name
-
-
-urlParser location =
-    UrlParser.parse identity pageParser location.pathname
-
-
-pageParser =
-    UrlParser.oneOf
-        [ format Index (UrlParser.s "")
-        , format Clicker (UrlParser.s "" </> UrlParser.string)
-        ]
-
-
-urlUpdate result model =
-    case result of
-        Err _ ->
-            ( model, Navigation.modifyUrl (toUrl model.page) )
-
-        Ok Index ->
-            ( { model | page = Index }, getCounters )
-
-        Ok page ->
-            ( { model | page = page }, Cmd.none )
-
-
-
 -- MODEL
 
 
@@ -134,10 +93,6 @@ safeToInt default =
     String.toInt >> Result.toMaybe >> Maybe.withDefault default
 
 
-getCounters =
-    Task.perform HttpError GetCounters (Http.get countersDecoder "http://localhost:8008/counters")
-
-
 countersDecoder =
     Json.Decode.list Json.Decode.string
 
@@ -172,10 +127,24 @@ keyListener key =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ div [] [ text model.counter.name ]
-        , div [] [ text (toString model.counter.value) ]
-        , button [ onClick Decrement ] [ text "-" ]
-        , button [ onClick Increment ] [ text "+" ]
-        , ul [] (List.map (\c -> li [] [ text c ]) model.counters)
-        ]
+    case model.page of
+        Clicker name ->
+            div []
+                [ div [] [ text model.counter.name ]
+                , div [] [ text (toString model.counter.value) ]
+                , button [ onClick Decrement ] [ text "-" ]
+                , button [ onClick Increment ] [ text "+" ]
+                ]
+
+        Index ->
+            div []
+                [ ul []
+                    (List.map
+                        (\c ->
+                            li []
+                                [ a [ href (toUrl (Clicker c)) ] [ text c ]
+                                ]
+                        )
+                        model.counters
+                    )
+                ]
