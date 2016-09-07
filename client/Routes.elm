@@ -2,12 +2,9 @@ module Routes exposing (..)
 
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
+import Model exposing (..)
+import Update exposing (..)
 import String
-
-
-type Page
-    = Index
-    | Clicker String
 
 
 toUrl page =
