@@ -38,7 +38,7 @@ type Page
 toUrl page =
     case page of
         Index ->
-            ""
+            "/"
 
         Clicker name ->
             "/" ++ name
