@@ -24,7 +24,7 @@ main =
 
 init : Result String Page -> ( Model, Cmd Msg )
 init result =
-    urlUpdate result (Model (Counter "Nymble" 0) [] True Index)
+    urlUpdate result (Model (Counter "" 0) [] True Index)
 
 
 
@@ -34,9 +34,18 @@ init result =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Platform.Sub.batch
-        [ WebSocket.listen server Update
+        [ subscribeCounter model.page model.counter
         , Keyboard.downs keyListener
         ]
+
+
+subscribeCounter page counter =
+    case page of
+        Index ->
+            Platform.Sub.none
+
+        Clicker name ->
+            WebSocket.listen server Update
 
 
 keyListener key =
