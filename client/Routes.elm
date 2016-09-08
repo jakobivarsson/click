@@ -2,11 +2,13 @@ module Routes exposing (..)
 
 import Navigation
 import UrlParser exposing (Parser, (</>), format, int, oneOf, s, string)
+import Messages exposing (Msg)
 import Model exposing (..)
 import Update exposing (..)
 import String
 
 
+toUrl : Page -> String
 toUrl page =
     case page of
         Index ->
@@ -21,6 +23,7 @@ hashParser location =
     UrlParser.parse identity pageParser (String.dropLeft 1 location.hash)
 
 
+pageParser : Parser (Page -> a) a
 pageParser =
     UrlParser.oneOf
         [ format Index (UrlParser.s "")
@@ -28,6 +31,7 @@ pageParser =
         ]
 
 
+urlUpdate : Result a Page -> Model -> ( Model, Cmd Msg )
 urlUpdate result model =
     case result of
         Err _ ->
@@ -36,5 +40,8 @@ urlUpdate result model =
         Ok Index ->
             ( { model | page = Index }, getCounters )
 
-        Ok page ->
-            ( { model | page = page }, Cmd.none )
+        Ok (Clicker name) ->
+            if List.member name model.counters then
+                ( { model | page = Clicker name, counter = { name = name, value = 0 } }, Cmd.none )
+            else
+                ( model, Navigation.modifyUrl (toUrl Index) )

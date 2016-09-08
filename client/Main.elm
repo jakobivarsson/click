@@ -12,6 +12,7 @@ import View exposing (..)
 import WebSocket
 
 
+main : Program Never
 main =
     Navigation.program (Navigation.makeParser hashParser)
         { init = init
@@ -24,7 +25,7 @@ main =
 
 init : Result String Page -> ( Model, Cmd Msg )
 init result =
-    urlUpdate result (Model (Counter "Nymble" 0) [] True Index)
+    urlUpdate result (Model (Counter "" 0) [] True Index)
 
 
 
@@ -34,11 +35,22 @@ init result =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Platform.Sub.batch
-        [ WebSocket.listen server Update
+        [ subscribeCounter model.page model.counter
         , Keyboard.downs keyListener
         ]
 
 
+subscribeCounter : Page -> Counter -> Sub Msg
+subscribeCounter page counter =
+    case page of
+        Index ->
+            Platform.Sub.none
+
+        Clicker name ->
+            WebSocket.listen server Update
+
+
+keyListener : Keyboard.KeyCode -> Msg
 keyListener key =
     case key of
         39 ->
