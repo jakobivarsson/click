@@ -12,6 +12,7 @@ import View exposing (..)
 import WebSocket
 
 
+main : Program Never
 main =
     Navigation.program (Navigation.makeParser hashParser)
         { init = init
@@ -39,6 +40,7 @@ subscriptions model =
         ]
 
 
+subscribeCounter : Page -> Counter -> Sub Msg
 subscribeCounter page counter =
     case page of
         Index ->
@@ -48,6 +50,7 @@ subscribeCounter page counter =
             WebSocket.listen server Update
 
 
+keyListener : Keyboard.KeyCode -> Msg
 keyListener key =
     case key of
         39 ->
