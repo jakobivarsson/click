@@ -11,23 +11,30 @@ import Routes exposing (toUrl)
 view : Model -> Html Msg
 view model =
     case model.page of
-        Clicker name ->
-            div []
-                [ div [] [ text model.counter.name ]
-                , div [] [ text (toString model.counter.value) ]
-                , button [ onClick Decrement ] [ text "-" ]
-                , button [ onClick Increment ] [ text "+" ]
-                ]
-
         Index ->
+            indexTemplate model.counters
+
+        Clicker name ->
+            clickerTemplate model.counter.name model.counter.value
+
+
+indexTemplate : List String -> Html Msg
+indexTemplate counters = 
             div []
                 [ ul []
-                    (List.map
-                        (\c ->
-                            li []
-                                [ a [ href (toUrl (Clicker c)) ] [ text c ]
-                                ]
-                        )
-                        model.counters
-                    )
+                    (List.map clickerListElement counters)
                 ]
+
+clickerListElement : String -> Html Msg
+clickerListElement c = li [] [ a [ href (toUrl (Clicker c)) ] [ text c ] ]
+
+
+clickerTemplate : String -> Int -> Html Msg
+clickerTemplate name value = 
+        div []
+            [ div [] [ text name ]
+            , div [] [ text (toString value) ]
+            , button [ onClick Decrement ] [ text "-" ]
+            , button [ onClick Increment ] [ text "+" ]
+            ]
+
