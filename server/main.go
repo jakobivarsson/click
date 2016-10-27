@@ -7,10 +7,12 @@ import (
 )
 
 func main() {
+	DB := GetDB()
+	DB.Open("click.db")
+	defer DB.Close()
+
 	rand.Seed(time.Now().UnixNano())
-	BA.Init("click.db")
-	defer BA.Close()
-	BA.LogCount("Cakes place", rand.Uint32())
-	BA.LogCount("This other place", rand.Uint32())
-	BA.AllLocations(PrintToday)
+	DB.LogClicks("Cakes place", rand.Uint32())
+	DB.LogClicks("This other place", rand.Uint32())
+	DB.PrintToday()
 }
