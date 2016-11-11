@@ -15,7 +15,7 @@ func main() {
 	user := "username"
 	pass := "password"
 	CreateUser(user, pass)
-	fmt.Println(CheckPassword(user, pass))
+	fmt.Println(AuthenticateUser(user, pass))
 
 	rand.Seed(time.Now().UnixNano())
 	DB.LogClicks("Cakes place", rand.Uint32())

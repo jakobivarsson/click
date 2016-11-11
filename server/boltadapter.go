@@ -88,25 +88,25 @@ func (ba *boltAdapter) PrintToday() {
 	})
 }
 
-// Auth returns the passhash associated with the name
-func (ba *boltAdapter) Auth(name string) string {
-	var passhash string
+// GetPassword returns the pass associated with the user
+func (ba *boltAdapter) GetPassword(user string) string {
+	var pass string
 	ba.db.View(func(root *bolt.Tx) error {
 		auth := root.Bucket([]byte("auth"))
-		passhash = string(auth.Get([]byte(name)))
+		pass = string(auth.Get([]byte(user)))
 		return nil
 	})
-	return passhash
+	return pass
 }
 
-// Stores a username/passhash in the database
-func (ba *boltAdapter) CreateAuthority(name string, passhash string) {
+// StorePassword stores a user/pass in the database
+func (ba *boltAdapter) StorePassword(user string, pass string) {
 	err := ba.db.Update(func(root *bolt.Tx) error {
 		auth := root.Bucket([]byte("auth"))
-		err := auth.Put([]byte(name), []byte(passhash))
+		err := auth.Put([]byte(user), []byte(pass))
 		return err
 	})
 	if err != nil {
-		fmt.Println("error creating auth", name, err)
+		fmt.Println("error creating auth", user, err)
 	}
 }
