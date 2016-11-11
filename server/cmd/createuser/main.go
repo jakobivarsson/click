@@ -4,22 +4,20 @@ package main
 import (
 	"fmt"
 	"github.com/jakobivarsson/click/server/click"
-	"math/rand"
-	"time"
+	"os"
 )
 
 func main() {
-	DB := GetDB()
+	DB := click.GetDB()
 	DB.Open("click.db")
 	defer DB.Close()
-
-	user := "username"
-	pass := "password"
-	CreateUser(user, pass)
-	fmt.Println(AuthenticateUser(user, pass))
-
-	rand.Seed(time.Now().UnixNano())
-	DB.LogClicks("Cakes place", rand.Uint32())
-	DB.LogClicks("This other place", rand.Uint32())
-	DB.PrintToday()
+	args := os.Args[1:]
+	user := args[0]
+	pass := args[1]
+	click.CreateUser(user, pass)
+	if click.AuthenticateUser(user, pass) {
+		fmt.Println("User authenticated.")
+	} else {
+		fmt.Println("User not authenticated.")
+	}
 }
