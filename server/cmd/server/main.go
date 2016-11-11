@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/jakobivarsson/click/server/click"
 	"golang.org/x/net/websocket"
 	"net/http"
 )

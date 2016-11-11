@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/jakobivarsson/click/server/click"
 	"math/rand"
 	"time"
 )
