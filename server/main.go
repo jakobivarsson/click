@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -10,6 +11,11 @@ func main() {
 	DB := GetDB()
 	DB.Open("click.db")
 	defer DB.Close()
+
+	user := "username"
+	pass := "password"
+	CreateUser(user, pass)
+	fmt.Println(CheckPassword(user, pass))
 
 	rand.Seed(time.Now().UnixNano())
 	DB.LogClicks("Cakes place", rand.Uint32())

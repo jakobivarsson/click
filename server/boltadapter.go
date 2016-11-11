@@ -23,8 +23,9 @@ func (ba *boltAdapter) Open(name string) {
 	}
 
 	err = ba.db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte("locations"))
-		_, err := tx.CreateBucketIfNotExists([]byte("auth"))
+		var err error
+		_, err = tx.CreateBucketIfNotExists([]byte("locations"))
+		_, err = tx.CreateBucketIfNotExists([]byte("auth"))
 		return err
 	})
 	if err != nil {
@@ -92,20 +93,20 @@ func (ba *boltAdapter) Auth(name string) string {
 	var passhash string
 	ba.db.View(func(root *bolt.Tx) error {
 		auth := root.Bucket([]byte("auth"))
-		passhash = auth.Get([]byte(name))
+		passhash = string(auth.Get([]byte(name)))
 		return nil
 	})
 	return passhash
 }
 
-// Stores a hash in the database
-func (ba *boltAdapter) CreateAuthority(name string, hashpass string) {
-	err = ba.db.Update(func(tx *bolt.Tx) error {
+// Stores a username/passhash in the database
+func (ba *boltAdapter) CreateAuthority(name string, passhash string) {
+	err := ba.db.Update(func(root *bolt.Tx) error {
 		auth := root.Bucket([]byte("auth"))
-		err := auth.Put([]byte(name), []byte(hashpass))
+		err := auth.Put([]byte(name), []byte(passhash))
 		return err
 	})
 	if err != nil {
-		fmt.Println("error logging ", location, err)
+		fmt.Println("error creating auth", name, err)
 	}
 }

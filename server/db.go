@@ -7,9 +7,8 @@ type ClickDatabase interface {
 	Close()
 	LogClicks(string, uint32)
 	PrintToday()
-	Auth(string)
-	CreateAuthority(string)
-	//Stats(time.Time, time.Time)
+	Auth(string) string
+	CreateAuthority(string, string)
 }
 
 var (
