@@ -24,9 +24,9 @@ func (ba *boltAdapter) Open(name string) {
 
 	err = ba.db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("locations"))
+		_, err := tx.CreateBucketIfNotExists([]byte("auth"))
 		return err
 	})
-	// TODO init other
 	if err != nil {
 		fmt.Println("error initializing boltdb ", name, err)
 	}
@@ -51,10 +51,8 @@ func (ba *boltAdapter) LogClicks(location string, count uint32) {
 			return err
 		}
 		buck := locations.Bucket([]byte(location))
-		if err = buck.Put([]byte(time.Now().Format(time.RFC3339)), ui32ToBytes(count)); err != nil {
-			return err
-		}
-		return nil
+		err = buck.Put([]byte(time.Now().Format(time.RFC3339)), ui32ToBytes(count))
+		return err
 	})
 	if err != nil {
 		fmt.Println("error logging ", location, err)
@@ -87,4 +85,27 @@ func (ba *boltAdapter) PrintToday() {
 		}
 		return nil
 	})
+}
+
+// Auth returns the passhash associated with the name
+func (ba *boltAdapter) Auth(name string) string {
+	var passhash string
+	ba.db.View(func(root *bolt.Tx) error {
+		auth := root.Bucket([]byte("auth"))
+		passhash = auth.Get([]byte(name))
+		return nil
+	})
+	return passhash
+}
+
+// Stores a hash in the database
+func (ba *boltAdapter) CreateAuthority(name string, hashpass string) {
+	err = ba.db.Update(func(tx *bolt.Tx) error {
+		auth := root.Bucket([]byte("auth"))
+		err := auth.Put([]byte(name), []byte(hashpass))
+		return err
+	})
+	if err != nil {
+		fmt.Println("error logging ", location, err)
+	}
 }
