@@ -1,29 +1,47 @@
 package click
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"golang.org/x/net/websocket"
 	"net/http"
 )
 
 var (
-	globalCounter *Counter
-	server        Server
+	server Server
 )
 
 type Server struct {
 	counters map[string]*Counter
+	Message  chan Message
 }
 
 func NewServer() Server {
 	counters := make(map[string]*Counter)
-	return Server{counters}
+	message := make(chan Message)
+	return Server{counters, message}
+}
+
+func (s *Server) Run() {
+	for {
+		m := <-s.Message
+		counter := s.GetCounter(m.Counter)
+		switch m.Type {
+		case TypeClick:
+			counter.Update <- m
+		case TypeSubscribe:
+			counter.Subscribe <- m.Subscriber
+		case TypeUnsubscribe:
+			counter.Unsubscribe <- m.Subscriber
+		case TypeGetCounters:
+			response := Message{Type: TypeCounters, Counters: s.GetCounterNames()}
+			m.Subscriber.Notify(response)
+		}
+	}
+
 }
 
 func (s *Server) AddCounter(name string) {
-	counter := NewCounter()
+	counter := NewCounter(name)
 	s.counters[name] = counter
 	go counter.Start()
 }
@@ -43,46 +61,16 @@ func (s *Server) GetCounterNames() []string {
 func RunServer() {
 	server = NewServer()
 	server.AddCounter("Nymble")
+	server.AddCounter("KTHB")
+	server.AddCounter("KTH Entre")
+	go server.Run()
 
-	r := mux.NewRouter()
-	r.Handle("/counters/{key}", websocket.Handler(wsHandler))
-	r.HandleFunc("/counters", getCounters).Methods("GET")
-	r.HandleFunc("/counters", postCounters).Methods("POST")
-
-	http.Handle("/", r)
+	http.Handle("/", websocket.Handler(wsHandler))
 	err := http.ListenAndServe(":3001", nil)
 	fmt.Println("Server error:", err)
 }
 
 func wsHandler(ws *websocket.Conn) {
-	vars := mux.Vars(ws.Request())
-	name := vars["key"]
-	counter := server.GetCounter(name)
-	if counter == nil {
-		ws.Close()
-		return
-	}
-
-	client := NewClient(ws, counter)
+	client := NewClient(ws, &server)
 	client.Listen()
-}
-
-func getCounters(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	json.NewEncoder(w).Encode(server.GetCounterNames())
-}
-
-func postCounters(w http.ResponseWriter, r *http.Request) {
-	name := r.PostFormValue("name")
-	if name == "" {
-		http.Error(w, "no name", http.StatusBadRequest)
-		return
-	}
-	if server.GetCounter(name) != nil {
-		http.Error(w, "counter already exists!", http.StatusBadRequest)
-		return
-	}
-
-	server.AddCounter(name)
-	w.Header().Add("Access-Control-Allow-Origin", "*")
 }
