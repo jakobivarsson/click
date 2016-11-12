@@ -1,0 +1,12 @@
+html {
+  background-color: #2d2d2c;
+  color: white;
+}
+
+.building {
+  transition: 0.5s;
+}
+
+.building:hover {
+  background-color: #e73953;
+}
