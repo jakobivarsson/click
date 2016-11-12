@@ -40,8 +40,8 @@ func (s *Server) Run() {
 
 }
 
-func (s *Server) AddCounter(name string) {
-	counter := NewCounter(name)
+func (s *Server) AddCounter(name string, count int) {
+	counter := NewCounter(name, count)
 	s.counters[name] = counter
 	go counter.Start()
 }
@@ -59,10 +59,14 @@ func (s *Server) GetCounterNames() []string {
 }
 
 func RunServer() {
+	db := GetDB()
+	db.Open("click.db")
+	defer db.Close()
 	server = NewServer()
-	server.AddCounter("Nymble")
-	server.AddCounter("KTHB")
-	server.AddCounter("KTH Entre")
+	for k, v := range db.GetCounters() {
+		server.AddCounter(k, int(v))
+	}
+
 	go server.Run()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
