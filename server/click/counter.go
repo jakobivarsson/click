@@ -14,19 +14,19 @@ type Counter struct {
 	Update      chan Message
 	Subscribe   chan Subscriber
 	Unsubscribe chan Subscriber
-	counter     int
+	count       int
 }
 
-func NewCounter(name string) *Counter {
+func NewCounter(name string, count int) *Counter {
 	update := make(chan Message, 8)
 	subscribe := make(chan Subscriber, 4)
 	unsubscribe := make(chan Subscriber, 4)
-	return &Counter{name: name, Update: update, Subscribe: subscribe, Unsubscribe: unsubscribe}
+	return &Counter{name: name, Update: update, Subscribe: subscribe, Unsubscribe: unsubscribe, count: count}
 }
 
 func (c *Counter) notifyClients() {
 	for _, client := range c.subscribers {
-		client.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.counter})
+		client.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.count})
 	}
 }
 
@@ -46,10 +46,10 @@ func (c *Counter) Start() {
 // The following methods are not thread-safe and should only be called by the owning Counter.
 
 func (c *Counter) updateValue(i int) {
-	if c.counter+i < 0 {
+	if c.count+i < 0 {
 		return
 	}
-	c.counter += i
+	c.count += i
 	c.notifyClients()
 }
 
