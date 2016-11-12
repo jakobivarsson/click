@@ -3,14 +3,12 @@ import './buildings.css';
 
 
 class Buildings extends Component {
-
   getBuildings() {
-    const buildings = ['Nymble', 'KTHB', 'Nymble THS Café', 'KTH Entrance'];
-    const buildingsList = buildings.map(building =>
+    const buildings = ['Nymble', 'KTHB', 'Nymble THS Café', 'KTH Entrace'];
+    return buildings.map(building => 
       <li className='building'>{building}</li>
     );
-    return buildingsList;
-  }
+  } 
 
   render() {
     return (
