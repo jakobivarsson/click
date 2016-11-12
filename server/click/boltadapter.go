@@ -21,7 +21,6 @@ func (ba *boltAdapter) Open(name string) {
 	if err != nil {
 		fmt.Println("error opening boltdb ", name, err)
 	}
-
 	err = ba.db.Update(func(tx *bolt.Tx) error {
 		var err error
 		_, err = tx.CreateBucketIfNotExists([]byte("locations"))
@@ -68,24 +67,51 @@ func beginningOfDay() time.Time {
 
 // PrintToday prints all the datapoints for all locations for today
 func (ba *boltAdapter) PrintToday() {
+	to := time.Now().Format(time.RFC3339)
+	t := time.Now()
+	y, m, d := t.Date()
+	from := time.Date(y, m, d, 0, 0, 0, 0, t.Location()).Format(time.RFC3339)
+	for l, _ := range ba.GetLocations() {
+		fmt.Println(l)
+		for k, v := range ba.GetClicks(from, to, l) {
+			fmt.Printf("[%s] : %d\n", k, v)
+		}
+	}
+}
+
+// GetClicks takes a time frame in RFC3339 format and a location
+// returns a map of all timestamps in this timeframe
+func (ba *boltAdapter) GetClicks(from string, to string, loc string) map[string]uint32 {
+	m := make(map[string]uint32)
+	ba.db.View(func(root *bolt.Tx) error {
+		location := root.Bucket([]byte("locations")).Bucket([]byte(loc))
+		cursor := location.Cursor()
+		for k, v := cursor.Seek([]byte(from)); k != nil && bytes.Compare(k, []byte(to)) <= 0; k, v = cursor.Next() {
+			m[string(k)] = binary.LittleEndian.Uint32(v)
+		}
+		return nil
+	})
+	return m
+}
+
+func (ba *boltAdapter) GetLocations() map[string]uint32 {
+	locs := make(map[string]uint32)
 	ba.db.View(func(root *bolt.Tx) error {
 		locations := root.Bucket([]byte("locations"))
 		cursor := locations.Cursor()
 		for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
 			// nil value means the key belongs to a bucket and not a value
 			if v == nil {
-				fmt.Printf("%s today\n", k)
-				min := []byte(beginningOfDay().Format(time.RFC3339))
-				max := []byte(time.Now().Format(time.RFC3339))
-
-				cursor := locations.Bucket(k).Cursor()
-				for k, v := cursor.Seek(min); k != nil && bytes.Compare(k, max) <= 0; k, v = cursor.Next() {
-					fmt.Printf("[%s] : %d\n", k, binary.LittleEndian.Uint32(v))
+				ck, cv := locations.Bucket(k).Cursor().Last()
+				locs[string(k)] = 0
+				if ck != nil {
+					locs[string(k)] = binary.LittleEndian.Uint32(cv)
 				}
 			}
 		}
 		return nil
 	})
+	return locs
 }
 
 // GetPassword returns the pass associated with the user
