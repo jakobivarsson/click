@@ -21,10 +21,9 @@ func (ba *boltAdapter) Open(name string) {
 	if err != nil {
 		fmt.Println("error opening boltdb ", name, err)
 	}
-
 	err = ba.db.Update(func(tx *bolt.Tx) error {
 		var err error
-		_, err = tx.CreateBucketIfNotExists([]byte("locations"))
+		_, err = tx.CreateBucketIfNotExists([]byte("counters"))
 		_, err = tx.CreateBucketIfNotExists([]byte("auth"))
 		return err
 	})
@@ -43,20 +42,20 @@ func ui32ToBytes(i uint32) []byte {
 	return []byte(buf.Bytes())
 }
 
-func (ba *boltAdapter) LogClicks(location string, count uint32) {
+func (ba *boltAdapter) LogClicks(counter string, count uint32) {
 	err := ba.db.Update(func(tx *bolt.Tx) error {
 		var err error
-		locations := tx.Bucket([]byte("locations"))
-		_, err = locations.CreateBucketIfNotExists([]byte(location))
+		counters := tx.Bucket([]byte("counters"))
+		_, err = counters.CreateBucketIfNotExists([]byte(counter))
 		if err != nil {
 			return err
 		}
-		buck := locations.Bucket([]byte(location))
+		buck := counters.Bucket([]byte(counter))
 		err = buck.Put([]byte(time.Now().Format(time.RFC3339)), ui32ToBytes(count))
 		return err
 	})
 	if err != nil {
-		fmt.Println("error logging ", location, err)
+		fmt.Println("error logging ", counter, err)
 	}
 }
 
@@ -66,26 +65,53 @@ func beginningOfDay() time.Time {
 	return time.Date(y, m, d, 0, 0, 0, 0, t.Location())
 }
 
-// PrintToday prints all the datapoints for all locations for today
+// PrintToday prints all the datapoints for all counters for today
 func (ba *boltAdapter) PrintToday() {
+	to := time.Now().Format(time.RFC3339)
+	t := time.Now()
+	y, m, d := t.Date()
+	from := time.Date(y, m, d, 0, 0, 0, 0, t.Location()).Format(time.RFC3339)
+	for c, _ := range ba.GetCounters() {
+		fmt.Println(c)
+		for k, v := range ba.GetClicks(from, to, c) {
+			fmt.Printf("[%s] : %d\n", k, v)
+		}
+	}
+}
+
+// GetClicks takes a time frame in RFC3339 format and a counter
+// returns a map of all timestamps in this timeframe
+func (ba *boltAdapter) GetClicks(from string, to string, c string) map[string]uint32 {
+	m := make(map[string]uint32)
 	ba.db.View(func(root *bolt.Tx) error {
-		locations := root.Bucket([]byte("locations"))
-		cursor := locations.Cursor()
+		counter := root.Bucket([]byte("counters")).Bucket([]byte(c))
+		cursor := counter.Cursor()
+		for k, v := cursor.Seek([]byte(from)); k != nil && bytes.Compare(k, []byte(to)) <= 0; k, v = cursor.Next() {
+			m[string(k)] = binary.LittleEndian.Uint32(v)
+		}
+		return nil
+	})
+	return m
+}
+
+func (ba *boltAdapter) GetCounters() map[string]uint32 {
+	locs := make(map[string]uint32)
+	ba.db.View(func(root *bolt.Tx) error {
+		counters := root.Bucket([]byte("counters"))
+		cursor := counters.Cursor()
 		for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
 			// nil value means the key belongs to a bucket and not a value
 			if v == nil {
-				fmt.Printf("%s today\n", k)
-				min := []byte(beginningOfDay().Format(time.RFC3339))
-				max := []byte(time.Now().Format(time.RFC3339))
-
-				cursor := locations.Bucket(k).Cursor()
-				for k, v := cursor.Seek(min); k != nil && bytes.Compare(k, max) <= 0; k, v = cursor.Next() {
-					fmt.Printf("[%s] : %d\n", k, binary.LittleEndian.Uint32(v))
+				ck, cv := counters.Bucket(k).Cursor().Last()
+				locs[string(k)] = 0
+				if ck != nil {
+					locs[string(k)] = binary.LittleEndian.Uint32(cv)
 				}
 			}
 		}
 		return nil
 	})
+	return locs
 }
 
 // GetPassword returns the pass associated with the user
