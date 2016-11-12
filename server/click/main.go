@@ -65,7 +65,10 @@ func RunServer() {
 	server.AddCounter("KTH Entre")
 	go server.Run()
 
-	http.Handle("/", websocket.Handler(wsHandler))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		s := websocket.Server{Handler: websocket.Handler(wsHandler)}
+		s.ServeHTTP(w, r)
+	})
 	err := http.ListenAndServe(":3001", nil)
 	fmt.Println("Server error:", err)
 }
