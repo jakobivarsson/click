@@ -1,4 +1,4 @@
-package main
+package click
 
 import (
 	"encoding/json"
@@ -40,7 +40,7 @@ func (s *Server) GetCounterNames() []string {
 	return keys
 }
 
-func main() {
+func RunServer() {
 	server = NewServer()
 	server.AddCounter("Nymble")
 
