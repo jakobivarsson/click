@@ -10,7 +10,6 @@ ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App} />
     <Route path="/counter" component={Counter} />
-    <Route path="/about" component={About} />
   </Router>,
   document.getElementById('root')
 );
