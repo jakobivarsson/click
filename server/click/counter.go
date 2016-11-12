@@ -4,36 +4,41 @@ import (
 	"fmt"
 )
 
-type Counter struct {
-	clients    []*Client
-	Update     chan int
-	Register   chan *Client
-	Unregister chan *Client
-	counter    int
+type Subscriber interface {
+	Notify(Message)
 }
 
-func NewCounter() *Counter {
-	update := make(chan int, 8)
-	register := make(chan *Client, 4)
-	unregister := make(chan *Client, 4)
-	return &Counter{Update: update, Register: register, Unregister: unregister}
+type Counter struct {
+	name        string
+	subscribers []Subscriber
+	Update      chan Message
+	Subscribe   chan Subscriber
+	Unsubscribe chan Subscriber
+	counter     int
+}
+
+func NewCounter(name string) *Counter {
+	update := make(chan Message, 8)
+	subscribe := make(chan Subscriber, 4)
+	unsubscribe := make(chan Subscriber, 4)
+	return &Counter{name: name, Update: update, Subscribe: subscribe, Unsubscribe: unsubscribe}
 }
 
 func (c *Counter) notifyClients() {
-	for _, client := range c.clients {
-		client.Update <- c.counter
+	for _, client := range c.subscribers {
+		client.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.counter})
 	}
 }
 
 func (c *Counter) Start() {
 	for {
 		select {
-		case i := <-c.Update:
-			c.updateValue(i)
-		case client := <-c.Register:
-			c.addClient(client)
-		case client := <-c.Unregister:
-			c.removeClient(client)
+		case m := <-c.Update:
+			c.updateValue(m.Value)
+		case client := <-c.Subscribe:
+			c.addSubscriber(client)
+		case client := <-c.Unsubscribe:
+			c.removeSubscriber(client)
 		}
 	}
 }
@@ -48,21 +53,21 @@ func (c *Counter) updateValue(i int) {
 	c.notifyClients()
 }
 
-func (c *Counter) addClient(client *Client) {
+func (c *Counter) addSubscriber(subscriber Subscriber) {
 	fmt.Println("New client")
-	c.clients = append(c.clients, client)
+	c.subscribers = append(c.subscribers, subscriber)
 }
 
-func (c *Counter) removeClient(client *Client) {
+func (c *Counter) removeSubscriber(subscriber Subscriber) {
 	fmt.Println("Client disconnected")
-	fmt.Println("Connected clients:", len(c.clients))
 	var index int
-	for i, c := range c.clients {
-		if c == client {
+	for i, s := range c.subscribers {
+		if s == subscriber {
 			index = i
 			break
 		}
 	}
-	c.clients = append(c.clients[:index], c.clients[index+1:]...)
-	close(client.Update)
+	c.subscribers = append(c.subscribers[:index], c.subscribers[index+1:]...)
+
+	// close(client.Update)
 }

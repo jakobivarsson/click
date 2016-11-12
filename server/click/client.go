@@ -1,29 +1,37 @@
 package click
 
 import (
+	"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
 	"io"
-	"strconv"
 )
 
+type Publisher interface {
+	Subscribe(Subscriber)
+	Unsubscribe(Subscriber)
+	Publish(Message)
+}
+
 type Client struct {
-	ws      *websocket.Conn
-	Update  chan int
-	counter *Counter
+	ws     *websocket.Conn
+	Update chan Message
+	server *Server
 }
 
 // Creates a new client
-func NewClient(ws *websocket.Conn, counter *Counter) *Client {
-	update := make(chan int)
-	return &Client{ws, update, counter}
+func NewClient(ws *websocket.Conn, server *Server) *Client {
+	update := make(chan Message)
+	return &Client{ws, update, server}
+}
+
+func (c *Client) Notify(m Message) {
+	c.Update <- m
 }
 
 // Registers the client to its counter
 // and listens for updates from ws and counter
 func (c *Client) Listen() {
-	c.counter.Register <- c
-	websocket.Message.Send(c.ws, strconv.Itoa(c.counter.counter))
 	go c.write()
 	c.read()
 }
@@ -32,21 +40,21 @@ func (c *Client) read() {
 	var data []byte
 	for {
 		err := websocket.Message.Receive(c.ws, &data)
+		var message Message
 		if err == io.EOF {
-			c.counter.Unregister <- c
-			return
+			message = Message{Type: TypeUnsubscribe, Subscriber: c}
 		} else if err != nil {
 			fmt.Println("Error:", err)
 			continue
+		} else {
+			if err = json.Unmarshal(data, &message); err != nil {
+				fmt.Println("Error:", err)
+				continue
+			}
 		}
-		message := string(data)
 		fmt.Println("New message:", message)
-		switch {
-		case message == "increment":
-			c.counter.Update <- 1
-		case message == "decrement":
-			c.counter.Update <- -1
-		}
+		message.Subscriber = c
+		c.server.Message <- message
 	}
 }
 
@@ -55,7 +63,8 @@ func (c *Client) write() {
 		message, more := <-c.Update
 		if more {
 			fmt.Println("Sending message:", message)
-			if err := websocket.Message.Send(c.ws, strconv.Itoa(message)); err != nil {
+			data, err := json.Marshal(message)
+			if err = websocket.Message.Send(c.ws, data); err != nil {
 				fmt.Println("Error sending message:", err)
 				continue
 			}
