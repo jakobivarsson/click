@@ -5,7 +5,7 @@ import "sync"
 type ClickDatabase interface {
 	Open(string)
 	Close()
-	GetLocations() map[string]uint32
+	GetCounters() map[string]uint32
 	LogClicks(string, uint32)
 	GetClicks(string, string, string) map[string]uint32
 	PrintToday()
