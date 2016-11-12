@@ -6,10 +6,9 @@ class Buildings extends Component {
  
   getBuildings() {
     const buildings = ['Nymble', 'KTHB', 'Nymble THS Café', 'KTH Entrace'];
-    const buildingsList = buildings.map(building => 
+    return buildings.map(building => 
       <li className='building'>{building}</li>
     );
-    return buildingsList;
   } 
 
   render() {
@@ -19,6 +18,7 @@ class Buildings extends Component {
       </div>
     );
   }
+
 }
 
 export default Buildings;
