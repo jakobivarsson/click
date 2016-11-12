@@ -1,0 +1,16 @@
+html {
+  background-color: #2d2d2c;
+  color: white;
+}
+
+.contributors > ul{
+  list-style-type: none;
+}
+
+.contributor {
+    font-size: 40px;
+}
+
+.contributor:hover {
+  background-color: #e73953;
+}
