@@ -11,7 +11,7 @@ ReactDOM.render(
     <Route path="/" component={App} />
     <Route path="/counter" component={Counter} />
     <Route path="/buildings" component={Buildings} />
-    <Route path="*" components={App} />
+    <Route path="*" component={App} />
   </Router>,
   document.getElementById('root')
 );
