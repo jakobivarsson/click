@@ -3,7 +3,6 @@ import './buildings.css';
 
 
 class Buildings extends Component {
-
   getBuildings(buildings) {
     return buildings.map(building =>
       <li key={building} className='building'>{building}</li>
