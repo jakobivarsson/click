@@ -12,9 +12,11 @@ class Buildings extends Component {
   render() {
     const buildings = ['Nymble', 'KTHB', 'Nymble THS Café', 'KTH Entrance'];
     return (
-      <div className='buildings'>
-		<h1>Buildings</h1>
-        <ul>{this.getBuildings(buildings)}</ul>
+      <div className='buildingsContainer'>
+		<div className='buildings'>
+		  <h1>Buildings</h1>
+		  <ul>{this.getBuildings(buildings)}</ul>
+		</div>
       </div>
     );
   }
