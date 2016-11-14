@@ -43,6 +43,8 @@ func (c *Client) read() {
 		var message Message
 		if err == io.EOF {
 			message = Message{Type: TypeUnsubscribe, Subscriber: c}
+			c.server.Message <- message
+			return
 		} else if err != nil {
 			fmt.Println("Error:", err)
 			continue

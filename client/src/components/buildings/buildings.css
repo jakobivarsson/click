@@ -3,6 +3,7 @@
     font-weight: 200;
     cursor: pointer;
 	padding: 10px 0;
+	user-select: none;
 }
 
 .buildings > ul {
@@ -21,9 +22,10 @@
 }
 
 .buildings {
+	display: flex;
+	flex-direction: column;
     font-size: 40px;
     text-align: left;
-	user-select: none;
     color: white;
 }
 
@@ -36,12 +38,17 @@ a {
     background-color: #e73953;
 }
 
-buildingsContainer {
+.buildings-container {
 	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-    background-color: #2d2d2c;
+    background: #2d2d2c;
+}
+
+.buildings-loader {
+	margin: 100px;
+	align-self: center;
 }
