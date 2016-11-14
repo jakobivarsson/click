@@ -12,6 +12,10 @@ func main() {
 	DB.Open("click.db")
 	defer DB.Close()
 	args := os.Args[1:]
+	if len(args) != 2 {
+		fmt.Println("Invalid arguments.")
+		return
+	}
 	user := args[0]
 	pass := args[1]
 	click.CreateUser(user, pass)

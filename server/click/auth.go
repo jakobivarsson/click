@@ -2,6 +2,7 @@ package click
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -17,6 +18,10 @@ func CreateUser(user string, pass string) {
 	db := GetDB()
 	sh := sha256.New()
 	sh.Write([]byte(user))
+	if len(pass) < 11 {
+		fmt.Println("Could not create user: Password too short.")
+		return
+	}
 	db.StorePassword(string(sh.Sum(nil)), hash(pass))
 }
 
