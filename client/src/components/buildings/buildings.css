@@ -1,23 +1,30 @@
-html {
-    background-color: #2d2d2c;
-    color: white;
-}
-
 .building {
-    margin: 5px 0 5px 0;
-    padding: 10px;
     transition: 0.2s ease-in-out;
     font-weight: 200;
+    cursor: pointer;
+	padding: 10px 0;
 }
 
 .buildings > ul {
     list-style: none;
+	padding: 0;
+	margin: 20px;
+}
+
+.buildings > h1 {
+	text-transform: uppercase;
+	margin: 20px;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 .buildings {
     font-size: 40px;
     text-align: left;
-    cursor: pointer;
+	user-select: none;
+    color: white;
 }
 
 a {
@@ -27,4 +34,14 @@ a {
 
 .building:hover {
     background-color: #e73953;
+}
+
+buildingsContainer {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+    background-color: #2d2d2c;
 }

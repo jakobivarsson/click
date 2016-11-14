@@ -1,15 +1,8 @@
-html {
+.counter {
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  text-align: center;
   background: #2d2d2c;
   color: white;
-}
-
-.counter {
-  width: 100vw;
 }
 
 .counter-button {
