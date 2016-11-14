@@ -63,8 +63,9 @@ func RunServer() {
 	db.Open("click.db")
 	defer db.Close()
 	server = NewServer()
-	for k, v := range db.GetCounters() {
-		server.AddCounter(k, int(v))
+	for _, l := range db.GetLogs() {
+		// TODO db.GetLastEntry(l, "count")
+		server.AddCounter(l, 0)
 	}
 
 	go server.Run()
