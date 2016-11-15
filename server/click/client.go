@@ -54,7 +54,6 @@ func (c *Client) read() {
 				continue
 			}
 		}
-		fmt.Println("New message:", message)
 		message.Subscriber = c
 		c.server.Message <- message
 	}
@@ -63,12 +62,13 @@ func (c *Client) read() {
 func (c *Client) write() {
 	for {
 		message, more := <-c.Update
+		if message.Type == TypeClose {
+			return
+		}
 		if more {
-			fmt.Println("Sending message:", message)
 			data, err := json.Marshal(message)
-			if err = websocket.Message.Send(c.ws, data); err != nil {
+			if err = websocket.Message.Send(c.ws, string(data)); err != nil {
 				fmt.Println("Error sending message:", err)
-				continue
 			}
 		} else {
 			return

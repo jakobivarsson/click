@@ -32,7 +32,6 @@ textarea:focus, input:focus{
 }
 
 button {
-  position: absolute;
   border: none;
   background-color: transparent;
   outline: none;
