@@ -15,6 +15,7 @@ type Counter struct {
 	Subscribe   chan Subscriber
 	Unsubscribe chan Subscriber
 	count       int
+	clicks      int
 }
 
 func NewCounter(name string, count int) *Counter {
@@ -26,7 +27,7 @@ func NewCounter(name string, count int) *Counter {
 
 func (c *Counter) notifyClients() {
 	for _, client := range c.subscribers {
-		client.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.count})
+		client.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.count, Clicks: c.clicks})
 	}
 }
 
@@ -48,6 +49,9 @@ func (c *Counter) Start() {
 func (c *Counter) updateValue(i int) {
 	if c.count+i < 0 {
 		return
+	}
+	if i > 0 {
+		c.clicks += i
 	}
 	c.count += i
 	c.notifyClients()

@@ -13,7 +13,8 @@ const (
 type Message struct {
 	Type       string     `json:"type"`
 	Counter    string     `json:"counter,omitempty"`
-	Value      int        `json:"value,omitempty"`
+	Value      int        `json:"value"`
+	Clicks     int        `json:"clicks"`
 	Subscriber Subscriber `json:"-"`
 	Counters   []string   `json:"counters,omitempty"`
 }
