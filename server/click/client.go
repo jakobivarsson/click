@@ -7,12 +7,6 @@ import (
 	"io"
 )
 
-type Publisher interface {
-	Subscribe(Subscriber)
-	Unsubscribe(Subscriber)
-	Publish(Message)
-}
-
 type Client struct {
 	ws     *websocket.Conn
 	Update chan Message
