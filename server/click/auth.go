@@ -18,8 +18,8 @@ func CreateUser(user string, pass string) {
 	db := GetDB()
 	sh := sha256.New()
 	sh.Write([]byte(user))
-	if len(pass) < 11 {
-		fmt.Println("Could not create user: Password too short.")
+	if len(user) < 5 || len(pass) < 11 {
+		fmt.Println("Could not create user: Username or Password too short.")
 		return
 	}
 	db.StorePassword(string(sh.Sum(nil)), hash(pass))

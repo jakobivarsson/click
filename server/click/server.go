@@ -69,7 +69,7 @@ func (s *Server) GetCounterNames() []string {
 
 func RunServer() {
 	db := GetDB()
-	db.Open("click.db")
+	db.Open()
 	defer db.Close()
 	server = NewServer()
 	for _, l := range db.GetLogs() {
