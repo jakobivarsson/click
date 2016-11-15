@@ -1,4 +1,4 @@
-package click
+package main
 
 import (
 	"bufio"
