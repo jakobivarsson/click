@@ -80,15 +80,20 @@ func RunServer() {
 	go server.Run()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		s := websocket.Server{Handler: websocket.Handler(wsHandler)}
-		s.ServeHTTP(w, r)
+		query := r.URL.Query()
+		user := query.Get("username")
+		pass := query.Get("password")
+		if AuthenticateUser(user, pass) {
+			fmt.Printf("New client: %v\n", user)
+			s := websocket.Server{Handler: websocket.Handler(wsHandler)}
+			s.ServeHTTP(w, r)
+		}
 	})
 	err := http.ListenAndServe(":3001", nil)
 	fmt.Println("Server error:", err)
 }
 
 func wsHandler(ws *websocket.Conn) {
-	fmt.Printf("New client: %v\n", ws.Request().URL.Query().Get("username"))
 	client := NewClient(ws, &server)
 	client.Listen()
 }
