@@ -24,23 +24,23 @@ func NewServer() Server {
 func (s *Server) Run() {
 	for {
 		m := <-s.Message
-		counter := s.GetCounter(m.Counter)
 		switch m.Type {
 		case TypeClick:
+			counter := s.GetCounter(m.Counter)
 			if counter == nil {
 				continue
 			}
 			counter.Update <- m
 		case TypeSubscribe:
+			counter := s.GetCounter(m.Counter)
 			if counter == nil {
 				continue
 			}
 			counter.Subscribe <- m.Subscriber
 		case TypeUnsubscribe:
-			if counter == nil {
-				continue
+			for _, counter := range s.counters {
+				counter.Unsubscribe <- m.Subscriber
 			}
-			counter.Unsubscribe <- m.Subscriber
 		case TypeGetCounters:
 			response := Message{Type: TypeCounters, Counters: s.GetCounterNames()}
 			m.Subscriber.Notify(response)
@@ -87,7 +87,7 @@ func RunServer() {
 }
 
 func wsHandler(ws *websocket.Conn) {
-	fmt.Println("New client")
+	fmt.Printf("New client: %v\n", ws.Request().URL.Query().Get("username"))
 	client := NewClient(ws, &server)
 	client.Listen()
 }

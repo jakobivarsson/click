@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { auth } from '../../auth';
 import './Login.css';
 
 class Login extends Component {
@@ -28,7 +29,11 @@ class Login extends Component {
 	this.positionCircle(event);
 	const username = this.state.username;
 	const password = this.state.password;
-	this.props.auth(username, password, () => browserHistory.push('/'));
+	auth(username, password, () => {
+	  browserHistory.push('/');
+	}, () => {
+	  console.log("Error opening websocket");
+	});
   }
     
   positionCircle(event) {

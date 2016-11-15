@@ -54,20 +54,23 @@ func (c *Counter) updateValue(i int) {
 }
 
 func (c *Counter) addSubscriber(subscriber Subscriber) {
-	fmt.Println("New client")
+	fmt.Println("New subscriber")
 	c.subscribers = append(c.subscribers, subscriber)
+	subscriber.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.count})
 }
 
 func (c *Counter) removeSubscriber(subscriber Subscriber) {
-	fmt.Println("Client disconnected")
-	var index int
+	index := -1
 	for i, s := range c.subscribers {
 		if s == subscriber {
 			index = i
 			break
 		}
 	}
-	c.subscribers = append(c.subscribers[:index], c.subscribers[index+1:]...)
-
+	if index > -1 {
+		fmt.Println("Client disconnected")
+		c.subscribers = append(c.subscribers[:index], c.subscribers[index+1:]...)
+		subscriber.Notify(Message{Type: TypeClose})
+	}
 	// close(client.Update)
 }
