@@ -45,11 +45,9 @@ func createUser() {
 }
 
 func help() {
-	//TODO
-	fmt.Println("Click Help")
-	fmt.Println("createuser")
-	fmt.Println("init")
-	fmt.Println("run")
+	fmt.Println("createuser\tCreates a user")
+	fmt.Println("init      \tInitializes the database")
+	fmt.Println("run       \tRuns the server")
 }
 
 func initdb() {
@@ -74,10 +72,10 @@ func run() {
 func credentials() (string, string) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("username: ")
+	fmt.Print("Username: ")
 	username, _ := reader.ReadString('\n')
 
-	fmt.Print("password: ")
+	fmt.Print("Password: ")
 	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		fmt.Println("Error reading password", err)
