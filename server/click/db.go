@@ -5,12 +5,13 @@ import "sync"
 type ClickDatabase interface {
 	Open(string)
 	Close()
-	GetCounters() map[string]uint32
-	LogClicks(string, uint32)
-	GetClicks(string, string, string) map[string]uint32
-	PrintToday()
+	GetLogs() []string
+	LogEntry(string, string, uint32)
+	GetLastEntry(string, string) uint32
+	GetEntries(string, string, string, string) map[string]uint32
 	GetPassword(string) string
 	StorePassword(string, string)
+	PrintToday(string, string)
 }
 
 var (
