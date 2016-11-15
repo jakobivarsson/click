@@ -27,10 +27,19 @@ func (s *Server) Run() {
 		counter := s.GetCounter(m.Counter)
 		switch m.Type {
 		case TypeClick:
+			if counter == nil {
+				continue
+			}
 			counter.Update <- m
 		case TypeSubscribe:
+			if counter == nil {
+				continue
+			}
 			counter.Subscribe <- m.Subscriber
 		case TypeUnsubscribe:
+			if counter == nil {
+				continue
+			}
 			counter.Unsubscribe <- m.Subscriber
 		case TypeGetCounters:
 			response := Message{Type: TypeCounters, Counters: s.GetCounterNames()}
@@ -78,6 +87,7 @@ func RunServer() {
 }
 
 func wsHandler(ws *websocket.Conn) {
+	fmt.Println("New client")
 	client := NewClient(ws, &server)
 	client.Listen()
 }

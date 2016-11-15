@@ -1,30 +1,56 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import './Login.css';
 
 class Login extends Component {
-  constructor() {
-    super();
-    
-    this.positionCircle = function(v) {
-      const circle = document.getElementById('circle');
-			circle.setAttribute('cx', v.clientX);
-			circle.setAttribute('cy', v.clientY);
-      const login = document.getElementById('login-rect');
-			login.setAttribute('class', 'login-progress');
-      setTimeout(() => {
-        login.setAttribute('display', 'none');
-        circle.setAttribute('class', 'expand');
-      }, 2400);
-    }
+  constructor(props) {
+    super(props);
+	
+	this.handleUserChange = this.handleUserChange.bind(this);
+	this.handlePassChange = this.handlePassChange.bind(this);
+	this.handleSubmit = this.handleSubmit.bind(this);
+	
+	this.state = {
+	  username: '',
+	  password: ''
+	}
   }
+  
+  handleUserChange(event) {
+	this.setState({username: event.target.value});
+  }
+
+  handlePassChange(event) {
+	this.setState({password: event.target.value});
+  }
+
+  handleSubmit(event) {
+	this.positionCircle(event);
+	const username = this.state.username;
+	const password = this.state.password;
+	this.props.auth(username, password, () => browserHistory.push('/'));
+  }
+    
+  positionCircle(event) {
+	const circle = document.getElementById('circle');
+		  circle.setAttribute('cx', event.clientX);
+		  circle.setAttribute('cy', event.clientY);
+	const login = document.getElementById('login-rect');
+		  login.setAttribute('class', 'login-progress');
+	setTimeout(() => {
+	  login.setAttribute('display', 'none');
+	  circle.setAttribute('class', 'expand');
+	}, 2400);
+  }
+
   render() {
     return (
       <div className="login">
         <div>
           <h1>click</h1>
-          <input placeholder="User"></input>
-          <input placeholder="Pass" type="password"></input>
-          <div className="button-container" onClick={this.positionCircle}>
+          <input placeholder="User" value={this.state.username} onChange={this.handleUserChange} />
+          <input placeholder="Pass" value={this.state.password} onChange={this.handlePassChange} type="password" />
+          <div className="button-container" onClick={this.handleSubmit}>
             <button>Login</button>
 
             <svg id="login-svg" className="login-button">
