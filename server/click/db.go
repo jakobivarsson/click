@@ -3,7 +3,7 @@ package click
 import "sync"
 
 type ClickDatabase interface {
-	Open(string)
+	Open()
 	Close()
 	GetLogs() []string
 	LogEntry(string, string, uint32)
