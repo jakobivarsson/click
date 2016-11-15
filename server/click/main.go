@@ -1,9 +1,8 @@
-package main
+package click
 
 import (
 	"bufio"
 	"fmt"
-	"github.com/jakobivarsson/click/server/click"
 	"golang.org/x/crypto/ssh/terminal"
 	"os"
 	"strings"
@@ -32,12 +31,12 @@ func main() {
 }
 
 func createUser() {
-	DB := click.GetDB()
+	DB := GetDB()
 	DB.Open()
 	defer DB.Close()
 	user, pass := credentials()
-	click.CreateUser(user, pass)
-	if click.AuthenticateUser(user, pass) {
+	CreateUser(user, pass)
+	if AuthenticateUser(user, pass) {
 		fmt.Println("User authenticated.")
 	} else {
 		fmt.Println("User not authenticated.")
@@ -51,7 +50,7 @@ func help() {
 }
 
 func initdb() {
-	DB := click.GetDB()
+	DB := GetDB()
 	DB.Open()
 	defer DB.Close()
 	DB.LogEntry("Nymble", "click", 0)
@@ -66,7 +65,7 @@ func initdb() {
 
 func run() {
 	fmt.Println("Starting click server")
-	click.RunServer()
+	RunServer()
 }
 
 func credentials() (string, string) {
