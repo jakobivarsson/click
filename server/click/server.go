@@ -35,6 +35,10 @@ func (s *Server) Run() {
 				continue
 			}
 			counter.Update <- m
+		case TypeSubscribeAll:
+			for _, counter := range s.counters {
+				counter.Subscribe <- m.Subscriber
+			}
 		case TypeSubscribe:
 			counter := s.GetCounter(m.Counter)
 			if counter == nil {

@@ -3,6 +3,7 @@ package main
 const (
 	TypeClick         = "click"
 	TypeCounterUpdate = "counter_update"
+	TypeSubscribeAll  = "subscribe_all"
 	TypeSubscribe     = "subscribe"
 	TypeUnsubscribe   = "unsubscribe"
 	TypeGetCounters   = "get_counters"
