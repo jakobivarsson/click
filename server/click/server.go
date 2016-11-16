@@ -115,8 +115,8 @@ func auth(next http.Handler) http.Handler {
 }
 
 type dataPoint struct {
-	Time  string `json:"time"`
-	Value int    `json:"value"`
+	Time  int64 `json:"time"`
+	Value int64 `json:"value"`
 }
 
 type buildingStats struct {
@@ -147,7 +147,12 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		clicks := make([]dataPoint, len(entries))
 		var i int
 		for t, value := range entries {
-			clicks[i].Time = t
+			tt, err := time.Parse(time.RFC3339, t)
+			if err != nil {
+				http.Error(w, "", http.StatusInternalServerError)
+				return
+			}
+			clicks[i].Time = tt.Unix()
 			clicks[i].Value = int(value)
 			i++
 		}
@@ -155,7 +160,12 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		counts := make([]dataPoint, len(entries))
 		i = 0
 		for t, value := range entries {
-			counts[i].Time = t
+			tt, err := time.Parse(time.RFC3339, t)
+			if err != nil {
+				http.Error(w, "", http.StatusInternalServerError)
+				return
+			}
+			counts[i].Time = tt.Unix()
 			counts[i].Value = int(value)
 			i++
 		}
