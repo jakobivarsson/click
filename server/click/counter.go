@@ -72,9 +72,8 @@ func (c *Counter) removeSubscriber(subscriber Subscriber) {
 		}
 	}
 	if index > -1 {
-		fmt.Println("Client disconnected")
+		fmt.Println("Client unsubscribed")
 		c.subscribers = append(c.subscribers[:index], c.subscribers[index+1:]...)
-		subscriber.Notify(Message{Type: TypeClose})
 	}
 	// close(client.Update)
 }
