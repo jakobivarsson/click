@@ -7,7 +7,6 @@ const (
 	TypeUnsubscribe   = "unsubscribe"
 	TypeGetCounters   = "get_counters"
 	TypeCounters      = "counters"
-	TypeClose         = "close"
 )
 
 type Message struct {

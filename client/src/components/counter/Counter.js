@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from '../../auth';
-import { subscribe, click, UPDATE } from '../../messages';
+import { subscribe, unsubscribe, click, UPDATE } from '../../messages';
 import './Counter.css';
 
 class Counter extends Component {
@@ -26,6 +26,9 @@ class Counter extends Component {
 	  ws.send(subscribe(this.state.name));
 	  this.setState({ws: ws});
 	});
+  }
+  componentWillUnmount() {
+	this.state.ws.send(unsubscribe(this.state.name));
   }
   handleIncrement() {
 	this.state.ws.send(click(this.state.name, 1));

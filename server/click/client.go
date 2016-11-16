@@ -38,6 +38,7 @@ func (c *Client) read() {
 		if err == io.EOF {
 			message = Message{Type: TypeUnsubscribe, Subscriber: c}
 			c.server.Message <- message
+			close(c.Update)
 			return
 		} else if err != nil {
 			fmt.Println("Error:", err)
@@ -56,9 +57,6 @@ func (c *Client) read() {
 func (c *Client) write() {
 	for {
 		message, more := <-c.Update
-		if message.Type == TypeClose {
-			return
-		}
 		if more {
 			data, err := json.Marshal(message)
 			if err = websocket.Message.Send(c.ws, string(data)); err != nil {

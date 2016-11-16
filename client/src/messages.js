@@ -25,3 +25,10 @@ export function subscribe(counter) {
 		counter
 	});
 }
+
+export function unsubscribe(counter) {
+	return JSON.stringify({
+		type: UNSUBSCRIBE,
+		counter
+	});
+}
