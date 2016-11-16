@@ -1,9 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"golang.org/x/net/websocket"
 	"net/http"
+	"strconv"
+	"time"
+
+	"golang.org/x/net/websocket"
 )
 
 var (
@@ -82,22 +86,82 @@ func RunServer() {
 		counter.Subscribe <- dbclient
 	}
 	go server.Run()
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-		user := query.Get("username")
-		pass := query.Get("password")
-		if AuthenticateUser(user, pass) {
-			fmt.Printf("New client: %v\n", user)
-			s := websocket.Server{Handler: websocket.Handler(wsHandler)}
-			s.ServeHTTP(w, r)
-		}
-	})
+	http.Handle("/ws", auth(http.HandlerFunc(connectionHandler)))
+	http.Handle("/stats", auth(http.HandlerFunc(statsHandler)))
 	err := http.ListenAndServe(":3001", nil)
 	fmt.Println("Server error:", err)
+}
+
+func connectionHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("New client")
+	s := websocket.Server{Handler: websocket.Handler(wsHandler)}
+	s.ServeHTTP(w, r)
 }
 
 func wsHandler(ws *websocket.Conn) {
 	client := NewClient(ws, &server)
 	client.Listen()
+}
+
+func auth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query()
+		user := query.Get("username")
+		pass := query.Get("password")
+		if AuthenticateUser(user, pass) {
+			next.ServeHTTP(w, r)
+		}
+	})
+}
+
+type dataPoint struct {
+	Time  string `json:"time"`
+	Value int    `json:"value"`
+}
+
+type buildingStats struct {
+	Name   string      `json:"name"`
+	Clicks []dataPoint `json:"clicks"`
+	Counts []dataPoint `json:"counts"`
+}
+
+func statsHandler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	fromi, err := strconv.ParseInt(query.Get("from"), 10, 64)
+	if err != nil {
+		http.Error(w, "invalid from parameter", http.StatusBadRequest)
+		return
+	}
+	toi, err := strconv.ParseInt(query.Get("to"), 10, 64)
+	if err != nil {
+		http.Error(w, "invalid to parameter", http.StatusBadRequest)
+		return
+	}
+	from := time.Unix(fromi, 0).Format(time.RFC3339)
+	to := time.Unix(toi, 0).Format(time.RFC3339)
+	db := GetDB()
+	buildings := db.GetLogs()
+	response := make([]buildingStats, len(buildings))
+	for j, b := range buildings {
+		entries := db.GetEntries(from, to, b, BucketClick)
+		clicks := make([]dataPoint, len(entries))
+		var i int
+		for t, value := range entries {
+			clicks[i].Time = t
+			clicks[i].Value = int(value)
+			i++
+		}
+		entries = db.GetEntries(from, to, b, BucketCount)
+		counts := make([]dataPoint, len(entries))
+		i = 0
+		for t, value := range entries {
+			counts[i].Time = t
+			counts[i].Value = int(value)
+			i++
+		}
+		response[j].Name = b
+		response[j].Clicks = clicks
+		response[j].Counts = counts
+	}
+	json.NewEncoder(w).Encode(response)
 }
