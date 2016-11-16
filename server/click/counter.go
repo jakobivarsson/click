@@ -18,11 +18,11 @@ type Counter struct {
 	clicks      int
 }
 
-func NewCounter(name string, count int) *Counter {
+func NewCounter(name string, count int, clicks int) *Counter {
 	update := make(chan Message, 8)
 	subscribe := make(chan Subscriber, 4)
 	unsubscribe := make(chan Subscriber, 4)
-	return &Counter{name: name, Update: update, Subscribe: subscribe, Unsubscribe: unsubscribe, count: count}
+	return &Counter{name: name, Update: update, Subscribe: subscribe, Unsubscribe: unsubscribe, count: count, clicks: clicks}
 }
 
 func (c *Counter) notifyClients() {

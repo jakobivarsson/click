@@ -53,14 +53,14 @@ func initdb() {
 	DB := GetDB()
 	DB.Open()
 	defer DB.Close()
-	DB.LogEntry("Nymble", "click", 0)
-	DB.LogEntry("Nymble", "count", 0)
-	DB.LogEntry("KTHB", "click", 0)
-	DB.LogEntry("KTHB", "count", 0)
-	DB.PrintToday("Nymble", "click")
-	DB.PrintToday("Nymble", "count")
-	DB.PrintToday("KTHB", "click")
-	DB.PrintToday("KTHB", "count")
+	DB.LogEntry("Nymble", BucketClick, 0)
+	DB.LogEntry("Nymble", BucketCount, 0)
+	DB.LogEntry("KTHB", BucketClick, 0)
+	DB.LogEntry("KTHB", BucketCount, 0)
+	DB.PrintToday("Nymble", BucketClick)
+	DB.PrintToday("Nymble", BucketCount)
+	DB.PrintToday("KTHB", BucketClick)
+	DB.PrintToday("KTHB", BucketCount)
 }
 
 func run() {

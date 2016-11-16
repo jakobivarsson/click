@@ -49,8 +49,8 @@ func (s *Server) Run() {
 
 }
 
-func (s *Server) createCounter(name string, count int) *Counter {
-	counter := NewCounter(name, count)
+func (s *Server) createCounter(name string, count int, clicks int) *Counter {
+	counter := NewCounter(name, count, clicks)
 	s.counters[name] = counter
 	go counter.Start()
 	return counter
@@ -76,8 +76,9 @@ func RunServer() {
 	dbclient := NewDbClient(&server)
 	go dbclient.Listen()
 	for _, l := range db.GetLogs() {
-		// TODO db.GetLastEntry(l, "count")
-		counter := server.createCounter(l, 0)
+		count := db.GetLastEntry(l, BucketCount)
+		clicks := db.GetLastEntry(l, BucketClick)
+		counter := server.createCounter(l, int(count), int(clicks))
 		counter.Subscribe <- dbclient
 	}
 	go server.Run()
