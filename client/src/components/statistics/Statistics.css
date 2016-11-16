@@ -1,0 +1,24 @@
+.statistics {
+	color: #2d2d2c;
+}
+
+.statistics > h1 {
+	padding: 0;
+	margin: 20px;
+}
+
+.statistics > h2 {
+	padding: 0;
+	margin: 20px;
+}
+
+.statistics-numbers {
+	margin: 20px;
+}
+
+.center {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}

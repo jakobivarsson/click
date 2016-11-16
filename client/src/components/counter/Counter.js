@@ -18,7 +18,9 @@ class Counter extends Component {
 	  ws.onmessage = event => {
 		const message = JSON.parse(event.data);	
 		if(message.type === UPDATE && message.counter === this.state.name) {
-		  this.setState({value: message.value});
+		  this.setState({
+			value: message.value,
+		  });
 		}
 	  }
 	  ws.send(subscribe(this.state.name));

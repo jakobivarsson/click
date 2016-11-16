@@ -1,0 +1,10 @@
+.time-chart {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: #fff;
+}
+
+.time-chart > div:first-child {
+	width: 800px;
+	max-width: 100vw;
+}
