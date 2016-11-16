@@ -126,6 +126,7 @@ type buildingStats struct {
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	query := r.URL.Query()
 	fromi, err := strconv.ParseInt(query.Get("from"), 10, 64)
 	if err != nil {
@@ -143,7 +144,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 	buildings := db.GetLogs()
 	response := make([]buildingStats, len(buildings))
 	for j, b := range buildings {
-		entries := db.GetEntries(from, to, b, BucketClick)
+		entries := db.GetEntries(b, BucketClick, from, to)
 		clicks := make([]dataPoint, len(entries))
 		var i int
 		for t, value := range entries {
@@ -153,10 +154,10 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			clicks[i].Time = tt.Unix()
-			clicks[i].Value = int(value)
+			clicks[i].Value = int64(value)
 			i++
 		}
-		entries = db.GetEntries(from, to, b, BucketCount)
+		entries = db.GetEntries(b, BucketCount, from, to)
 		counts := make([]dataPoint, len(entries))
 		i = 0
 		for t, value := range entries {
@@ -166,7 +167,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			counts[i].Time = tt.Unix()
-			counts[i].Value = int(value)
+			counts[i].Value = int64(value)
 			i++
 		}
 		response[j].Name = b

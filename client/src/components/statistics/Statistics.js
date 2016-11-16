@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
 import TimeChart from './TimeChart';
+import 'whatwg-fetch';
 import './Statistics.css';
+
+// Seconds of day
+const DAY = 24*60*60;
 
 export default class Statistics extends Component {
 	constructor(props) {
 		super(props);
-		const time = Date.now();
-		const hour = 3600000;
-		const data = [
-			{x: time, y: 1},
-			{x: time+hour, y: 2},
-			{x: time+2*hour, y: 5},
-			{x: time+3*hour, y: 2},
-			{x: time+4*hour, y: 7}
-		];
-		const series = [{
-			title: 'Nymble',
-			disabled: false,
-			data
-		}];
 		this.state = {
-			series,
+			counts: [],
+			clicks: [],
 			buildings: [{
 				name: "Nymble",
 				value: 1000,
@@ -39,6 +30,55 @@ export default class Statistics extends Component {
 		this.totalClicks = this.totalClicks.bind(this);
 		this.totalVisitors = this.totalVisitors.bind(this);
 		this.renderVisitors = this.renderVisitors.bind(this);
+		this.fetchStats = this.fetchStats.bind(this);
+	}
+
+	componentDidMount() {
+		this.fetchStats();
+		const interval = setInterval(() => this.fetchStats(), 5000);
+		this.setState({interval});
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.interval);
+	}
+
+	fetchStats() {
+		const user = localStorage.username;
+		const pass = localStorage.password;
+		const to = Math.round(Date.now()/1000); // convert to seconds #lerp
+		const from = to-2*DAY;
+		const url = `http://localhost:3001/stats?username=${user}&password=${pass}&from=${from}&to=${to}`;
+		fetch(url).then(r => r.json()).then(buildings => {
+			console.log(buildings);
+			const clicks = buildings.map(b => {
+				const prev = this.state.clicks.find(s => s.title === b.name);
+				return {
+					title: b.name,
+					disabled: prev ? prev.disabled : false,
+					data: b.clicks.map(c => {
+						return {
+							x: c.time*1000,
+							y: c.value
+						};
+					}).sort((a, b) => a.x-b.x)
+				}
+			});
+			const counts = buildings.map(b => {
+				const prev = this.state.counts.find(s => s.title === b.name);
+				return {
+					title: b.name,
+					disabled: prev ? prev.disabled : false,
+					data: b.counts.map(c => {
+						return {
+							x: c.time*1000,
+							y: c.value
+						};
+					}).sort((a, b) => a.x-b.x)
+				}
+			});
+			this.setState({clicks, counts});
+		});
 	}
 
 	totalClicks() {
@@ -54,14 +94,15 @@ export default class Statistics extends Component {
 	renderVisitors() {
 		const {buildings} = this.state;
 		return buildings.map(building => 
-			<div>{building.name}: {building.value}</div>
+			<div key={building.name}>{building.name}: {building.value}</div>
 		);
 	}
 
 	disableSeries(index) {
-		const {series} = this.state;
-		series[index].disabled = !series[index].disabled;
-		this.setState({series});
+		const {clicks, counts} = this.state;
+		clicks[index].disabled = !clicks[index].disabled;
+		counts[index].disabled = !counts[index].disabled;
+		this.setState({counts, clicks});
 	}
 
 	render() {
@@ -76,14 +117,14 @@ export default class Statistics extends Component {
 					</div>
 					<h2>Visitors</h2>
 					<TimeChart 
-						series={this.state.series}
+						series={this.state.counts}
 						disableSeries={this.disableSeries}/>
 					<h2>Clicks</h2>
 					<div className='statistics-numbers'>
 						<div>Total: {this.totalClicks()}</div>
 					</div>
 					<TimeChart 
-						series={this.state.series}
+						series={this.state.clicks}
 						disableSeries={this.disableSeries}/>
 				</div>
 			</div>
