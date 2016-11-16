@@ -1,22 +1,33 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
+const (
+	BucketCount = "count"
+	BucketClick = "click"
+)
+
+type counterValues struct {
+	value  int
+	clicks int
+}
+
 // DbClient is a client that writes to the database
 type DbClient struct {
-	db     ClickDatabase
-	Update chan Message
-	server *Server
-	ticker *time.Ticker
+	db       ClickDatabase
+	Update   chan Message
+	server   *Server
+	ticker   *time.Ticker
+	counters map[string]counterValues
 }
 
 // NewDbClient creates a new dbclient
 func NewDbClient(server *Server) *DbClient {
 	update := make(chan Message)
-	return &DbClient{GetDB(), update, server, time.NewTicker(time.Second * 5)}
+	counters := make(map[string]counterValues)
+	return &DbClient{GetDB(), update, server, time.NewTicker(time.Second * 5), counters}
 	//time.Minute * 5)}
 }
 
@@ -26,20 +37,20 @@ func (c *DbClient) Notify(m Message) {
 }
 
 func (c *DbClient) Listen() {
-	// TODO get all buildings and save the count and clicks for them all
 	for {
 		select {
 		case message, more := <-c.Update:
 			if more {
-				// data, err := json.Marshal(message)
-				// TODO save the count and/or clicks received
-				fmt.Println("saved count and/or clicks", message)
+				c.counters[message.Counter] = counterValues{message.Value, message.Clicks}
 			} else {
 				return
 			}
 		case _ = <-c.ticker.C:
 			// TODO write to database
-			fmt.Println("logging clicks and count")
+			for building, values := range c.counters {
+				c.db.LogEntry(building, BucketClick, uint32(values.clicks))
+				c.db.LogEntry(building, BucketCount, uint32(values.value))
+			}
 		}
 	}
 }
