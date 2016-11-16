@@ -49,10 +49,11 @@ func (s *Server) Run() {
 
 }
 
-func (s *Server) AddCounter(name string, count int) {
+func (s *Server) createCounter(name string, count int) *Counter {
 	counter := NewCounter(name, count)
 	s.counters[name] = counter
 	go counter.Start()
+	return counter
 }
 
 func (s *Server) GetCounter(name string) *Counter {
@@ -72,11 +73,13 @@ func RunServer() {
 	db.Open()
 	defer db.Close()
 	server = NewServer()
+	dbclient := NewDbClient(&server)
+	go dbclient.Listen()
 	for _, l := range db.GetLogs() {
 		// TODO db.GetLastEntry(l, "count")
-		server.AddCounter(l, 0)
+		counter := server.createCounter(l, 0)
+		counter.Subscribe <- dbclient
 	}
-
 	go server.Run()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
