@@ -74,22 +74,3 @@ rect {
   }
 }
 
-#circle-container {
-  z-index: -1;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-circle {
-  height: 100vh;
-  fill: #2d2d2c;
-  transition: r 500ms ease-in-out;
-}
-
-.expand {
-  r: calc(100vh * 1.5);
-}

@@ -18,40 +18,34 @@ class Login extends Component {
   }
   
   handleUserChange(event) {
-	this.setState({username: event.target.value});
+    this.setState({username: event.target.value});
   }
 
   handlePassChange(event) {
-	this.setState({password: event.target.value});
+    this.setState({password: event.target.value});
   }
 
   handleSubmit(event) {
-	this.positionCircle(event);
-	const username = this.state.username;
-	const password = this.state.password;
-	auth(username, password, () => {
-	  browserHistory.push('/');
-	}, () => {
-	  console.log("Error opening websocket");
-	});
+    this.positionCircle(event);
+    const username = this.state.username;
+    const password = this.state.password;
+    auth(username, password, () => {
+      browserHistory.push('/');
+    }, () => {
+      console.log("Error opening websocket");
+    });
   }
     
   positionCircle(event) {
-	const circle = document.getElementById('circle');
-		  circle.setAttribute('cx', event.clientX);
-		  circle.setAttribute('cy', event.clientY);
-	const login = document.getElementById('login-rect');
-		  login.setAttribute('class', 'login-progress');
-	setTimeout(() => {
-	  login.setAttribute('display', 'none');
-	  circle.setAttribute('class', 'expand');
-	}, 2400);
+    console.log(event.clientX);
+    this.props.animate(event.clientX, event.clientY);
   }
 
   render() {
     return (
       <div className="login">
         <div>
+          <button>Login</button>
           <h1>click</h1>
           <input placeholder="User" value={this.state.username} onChange={this.handleUserChange} />
           <input placeholder="Pass" value={this.state.password} onChange={this.handlePassChange} type="password" />
@@ -64,9 +58,6 @@ class Login extends Component {
 
           </div>
         </div>
-        <svg id="circle-container">
-          <circle id="circle" cx="10" cy="10" r="0"/>
-        </svg>
       </div>
     );
   }
