@@ -17,3 +17,8 @@ circle {
 .expand {
   r: calc(100vh * 2);
 }
+
+@keyframes slide {
+  0% { }
+  100% { transform: translateY(0); }
+}

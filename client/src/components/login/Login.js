@@ -56,9 +56,6 @@ class Login extends Component {
 
             <div className="button-container" onClick={this.handleSubmit}>
               <button>Login</button>
-              <svg id="login-svg" className="login-button">
-                <rect id="login-rect" />
-              </svg>
             </div>
         
           </div>

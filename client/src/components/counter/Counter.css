@@ -5,6 +5,7 @@
 
 .counter-value {
   align-self: center;
+  font-weight: 200;
 }
 
 .counter-button {
@@ -15,7 +16,8 @@
   border: none;
   transition: 0.5s;
   color: white;
-  font-size: 150px;
+  font-size: 120px;
+  font-weight: 200;
 }
 
 .counter-button:hover {
@@ -31,7 +33,9 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 50px;
+  font-size: 35px;
+  transform: translateY(250px);
+  animation: slide 350ms forwards;
 }
 
 .buttons {
