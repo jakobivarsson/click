@@ -9,12 +9,10 @@
 .buildings > ul {
   list-style: none;
   padding: 0;
-  margin: 20px;
 }
 
 .buildings > h1 {
   text-transform: uppercase;
-  margin: 20px;
 }
 
 * {
@@ -22,7 +20,7 @@
 }
 
 .buildings {
-  margin: 10px 0;
+  margin: 10px 20px;
   font-size: 35px;
   text-align: left;
   color: white;
