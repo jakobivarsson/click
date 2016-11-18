@@ -12,9 +12,6 @@ class App extends Component {
     return (
       <div className="wrapper">
         <svg id="circle-container">
-          <circle id="circle2" cx="10" cy="10" r="0"/>
-        </svg>
-        <svg id="circle-container">
           <circle id="circle" cx="10" cy="10" r="1000vh"/>
         </svg>
         <Router history={browserHistory}>
