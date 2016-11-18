@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import TimeChart from './TimeChart';
+import {connect} from '../../auth';
+import {subscribeAll, unsubscribeAll} from '../../messages';
 import 'whatwg-fetch';
 import './Statistics.css';
 
@@ -12,19 +14,7 @@ export default class Statistics extends Component {
 		this.state = {
 			counts: [],
 			clicks: [],
-			buildings: [{
-				name: "Nymble",
-				value: 1000,
-				clicks: 3000
-			}, {
-				name: "KTHB",
-				value: 300,
-				clicks: 2000
-			}, {
-				name: "KTH Entré",
-				value: 100,
-				clicks: 500
-			}]
+			buildings: []
 		};
 		this.disableSeries = this.disableSeries.bind(this);
 		this.totalClicks = this.totalClicks.bind(this);
@@ -37,10 +27,35 @@ export default class Statistics extends Component {
 		this.fetchStats();
 		const interval = setInterval(() => this.fetchStats(), 5000);
 		this.setState({interval});
+    connect(ws => {
+      ws.onmessage = event => {
+        const message = JSON.parse(event.data);
+        let index = -1;
+        const counter = {
+          name: message.counter,
+          value: message.value,
+          clicks: message.clicks
+        };
+        const buildings = this.state.buildings;
+        buildings.forEach((b, i) => {
+          if(b.name===message.counter) {
+            index = i;
+          }
+        });
+        if(index > -1) {
+          buildings[index] = counter;
+        } else {
+          buildings.push(counter);
+        }
+        this.setState({buildings});
+      }
+      ws.send(subscribeAll());
+    });
 	}
 
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
+    connect(ws => ws.send(unsubscribeAll()));
 	}
 
 	fetchStats() {
@@ -50,7 +65,6 @@ export default class Statistics extends Component {
 		const from = to-2*DAY;
 		const url = `http://localhost:3001/stats?username=${user}&password=${pass}&from=${from}&to=${to}`;
 		fetch(url).then(r => r.json()).then(buildings => {
-			console.log(buildings);
 			const clicks = buildings.map(b => {
 				const prev = this.state.clicks.find(s => s.title === b.name);
 				return {
