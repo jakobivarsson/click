@@ -5,6 +5,7 @@ export const UPDATE = "counter_update";
 export const SUBSCRIBE_ALL = "subscribe_all";
 export const SUBSCRIBE = "subscribe";
 export const UNSUBSCRIBE = "unsubscribe";
+export const UNSUBSCRIBE_ALL = "unsubscribe_all";
 
 export function getCounters() {
     return JSON.stringify({
@@ -38,4 +39,10 @@ export function unsubscribe(counter) {
 		type: UNSUBSCRIBE,
 		counter
 	});
+}
+
+export function unsubscribeAll() {
+  return JSON.stringify({
+    type: UNSUBSCRIBE_ALL
+  });
 }

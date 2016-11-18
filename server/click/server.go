@@ -46,6 +46,12 @@ func (s *Server) Run() {
 			}
 			counter.Subscribe <- m.Subscriber
 		case TypeUnsubscribe:
+			counter := s.GetCounter(m.Counter)
+			if counter == nil {
+				continue
+			}
+			counter.Unsubscribe <- m.Subscriber
+		case TypeUnsubscribeAll:
 			for _, counter := range s.counters {
 				counter.Unsubscribe <- m.Subscriber
 			}

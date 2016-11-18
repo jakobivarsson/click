@@ -26,9 +26,17 @@ class Counter extends Component {
 	  ws.send(subscribe(this.state.name));
 	  this.setState({ws: ws});
 	});
+    document.onkeydown = e => {
+      if(e.keyCode === 39) {
+        this.handleIncrement();
+      } else if(e.keyCode === 37) {
+        this.handleDecrement();
+      }
+    };
   }
   componentWillUnmount() {
 	this.state.ws.send(unsubscribe(this.state.name));
+    document.onkeydown = undefined;
   }
   handleIncrement() {
 	this.state.ws.send(click(this.state.name, 1));

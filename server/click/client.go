@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/net/websocket"
 	"io"
+
+	"golang.org/x/net/websocket"
 )
 
 type Client struct {
@@ -36,7 +37,7 @@ func (c *Client) read() {
 		err := websocket.Message.Receive(c.ws, &data)
 		var message Message
 		if err == io.EOF {
-			message = Message{Type: TypeUnsubscribe, Subscriber: c}
+			message = Message{Type: TypeUnsubscribeAll, Subscriber: c}
 			c.server.Message <- message
 			close(c.Update)
 			return
