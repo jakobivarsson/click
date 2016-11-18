@@ -16,8 +16,7 @@ class Counter extends Component {
   componentDidMount() {
     connect(ws => {
       ws.onmessage = event => {
-        const message = JSON.parse(event.data);	
-        if(message.type === UPDATE && message.counter === this.state.name) {
+        const message = JSON.parse(event.data); if(message.type === UPDATE && message.counter === this.state.name) {
           this.setState({
             value: message.value,
           });
@@ -43,7 +42,6 @@ class Counter extends Component {
           <h1>{this.state.name}</h1>
           <h2 className="counter-value">{this.state.value}</h2>
           <div className="buttons">
-            <button className="counter-button" onClick={this.props.animate(1,2)}>X</button>
             <button className="counter-button" onClick={this.handleDecrement}>-</button>
             <button className="counter-button" onClick={this.handleIncrement}>+</button>
           </div>

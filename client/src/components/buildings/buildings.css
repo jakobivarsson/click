@@ -1,54 +1,54 @@
 .building {
-    transition: 0.2s ease-in-out;
-    font-weight: 200;
-    cursor: pointer;
-	padding: 10px 0;
-	user-select: none;
+  transition: 0.2s ease-in-out;
+  font-weight: 200;
+  cursor: pointer;
+  padding: 10px 0;
+  user-select: none;
 }
 
 .buildings > ul {
-    list-style: none;
-	padding: 0;
-	margin: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 20px;
 }
 
 .buildings > h1 {
-	text-transform: uppercase;
-	margin: 20px;
+  text-transform: uppercase;
+  margin: 20px;
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .buildings {
-	display: flex;
-	flex-direction: column;
-    font-size: 40px;
-    text-align: left;
-    color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 40px;
+  text-align: left;
+  color: white;
 }
 
 a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 .building:hover {
-    background-color: #e73953;
+  background-color: #e73953;
 }
 
 .buildings-container {
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-    background: #2d2d2c;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background: #2d2d2c; */
 }
 
 .buildings-loader {
-	margin: 100px;
-	align-self: center;
+  margin: 100px;
+  align-self: center;
 }
