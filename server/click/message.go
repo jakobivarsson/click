@@ -1,13 +1,14 @@
 package main
 
 const (
-	TypeClick         = "click"
-	TypeCounterUpdate = "counter_update"
-	TypeSubscribeAll  = "subscribe_all"
-	TypeSubscribe     = "subscribe"
-	TypeUnsubscribe   = "unsubscribe"
-	TypeGetCounters   = "get_counters"
-	TypeCounters      = "counters"
+	TypeClick          = "click"
+	TypeCounterUpdate  = "counter_update"
+	TypeSubscribeAll   = "subscribe_all"
+	TypeSubscribe      = "subscribe"
+	TypeUnsubscribe    = "unsubscribe"
+	TypeUnsubscribeAll = "unsubscribe_all"
+	TypeGetCounters    = "get_counters"
+	TypeCounters       = "counters"
 )
 
 type Message struct {

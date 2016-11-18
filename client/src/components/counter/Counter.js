@@ -16,7 +16,8 @@ class Counter extends Component {
   componentDidMount() {
     connect(ws => {
       ws.onmessage = event => {
-        const message = JSON.parse(event.data); if(message.type === UPDATE && message.counter === this.state.name) {
+        const message = JSON.parse(event.data);	
+        if(message.type === UPDATE && message.counter === this.state.name) {
           this.setState({
             value: message.value,
           });
@@ -25,9 +26,17 @@ class Counter extends Component {
       ws.send(subscribe(this.state.name));
       this.setState({ws: ws});
     });
+    document.onkeydown = e => {
+      if(e.keyCode === 39) {
+        this.handleIncrement();
+      } else if(e.keyCode === 37) {
+        this.handleDecrement();
+      }
+    };
   }
   componentWillUnmount() {
     this.state.ws.send(unsubscribe(this.state.name));
+    document.onkeydown = undefined;
   }
   handleIncrement() {
     this.state.ws.send(click(this.state.name, 1));
@@ -41,10 +50,12 @@ class Counter extends Component {
         <div className="counter">
           <h1>{this.state.name}</h1>
           <h2 className="counter-value">{this.state.value}</h2>
+
           <div className="buttons">
             <button className="counter-button" onClick={this.handleDecrement}>-</button>
             <button className="counter-button" onClick={this.handleIncrement}>+</button>
           </div>
+
         </div>
       </div>
     );
