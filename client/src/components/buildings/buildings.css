@@ -4,6 +4,8 @@
   cursor: pointer;
   padding: 10px 0;
   user-select: none;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .buildings > ul {
@@ -21,7 +23,7 @@
 
 .buildings {
   margin: 10px 20px;
-  font-size: 35px;
+  font-size: 25px;
   text-align: left;
   color: white;
 }
