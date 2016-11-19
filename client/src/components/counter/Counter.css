@@ -1,4 +1,4 @@
-.counter {
+counter {
   display: flex;
   flex-direction: column;
 }
@@ -6,6 +6,7 @@
 .counter-value {
   align-self: center;
   font-weight: 200;
+  text-align: center;
 }
 
 .counter-button {
