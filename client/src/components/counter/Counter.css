@@ -5,6 +5,24 @@
   overflow: hidden;
 }
 
+.counter > h1 {
+  text-align: center;
+  color: #00d790;
+  padding-bottom: 50px;
+  padding-top: 30px;
+}
+
+.counter-navigate {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  opacity: 0.7;
+  font-size: 17px;
+}
+
 .counter-value {
   align-self: center;
   font-weight: 200;
@@ -13,11 +31,11 @@
 
 .counter-button {
   display: block;
+  width: 150px;
+  height: 100px;
   background: none;
   border: none;
   color: white;
-  font-size: 120px;
-  font-weight: 200;
   cursor: pointer;
   outline: none;
   user-select: none;

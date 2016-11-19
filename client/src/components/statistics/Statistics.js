@@ -109,7 +109,10 @@ export default class Statistics extends Component {
   renderVisitors() {
     const {buildings} = this.state;
     return buildings.map(building => 
-      <div key={building.name}>{building.name}: {building.value}</div>
+      <div key={building.name} className='statistics-building'>
+        <div>{building.name}</div>
+        <div>{building.value}</div>
+      </div>
     );
   }
 
@@ -127,21 +130,21 @@ export default class Statistics extends Component {
           <h1>Building Statistics</h1>
           <h2>Real time</h2>
           <div className='statistics-numbers'>
-            <div>Total: {this.totalVisitors()}</div>
             {this.renderVisitors()}
+          </div>
+          <div className='statistics-total'>Total: {this.totalVisitors()}</div>
+          <h2>Visitors</h2>
+          <TimeChart 
+            series={this.state.counts}
+            disableSeries={this.disableSeries}/>
+          <h2>Clicks</h2>
+          <div className='statistics-numbers'>
+          <div>Total: {this.totalClicks()}</div>
+          </div>
+          <TimeChart 
+            series={this.state.clicks}
+            disableSeries={this.disableSeries}/>
         </div>
-        <h2>Visitors</h2>
-        <TimeChart 
-          series={this.state.counts}
-          disableSeries={this.disableSeries}/>
-        <h2>Clicks</h2>
-        <div className='statistics-numbers'>
-        <div>Total: {this.totalClicks()}</div>
-        </div>
-        <TimeChart 
-          series={this.state.clicks}
-          disableSeries={this.disableSeries}/>
-      </div>
       </div>
     );
   }

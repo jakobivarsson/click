@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from '../../auth';
 import { subscribe, unsubscribe, click, UPDATE } from '../../messages';
+import BackImg from './navigate_before_white.svg';
+import AddImg from './add_white.svg';
+import RemoveImg from './remove_white.svg';
+import { Link } from 'react-router';
 import './Counter.css';
 
 class Counter extends Component {
@@ -36,6 +40,7 @@ class Counter extends Component {
   }
   componentWillUnmount() {
     this.state.ws.send(unsubscribe(this.state.name));
+    this.state.ws.onmessage = undefined;
     document.onkeydown = undefined;
   }
   handleIncrement() {
@@ -47,13 +52,23 @@ class Counter extends Component {
   render() {
     return (
       <div className="counter-container">
+        <Link to="/">
+          <div className="counter-navigate">
+              <img src={BackImg} width={30} height={29} alt="back" />
+              <div>Buildings</div>
+          </div>
+        </Link>
         <div className="counter">
           <h1>{this.state.name}</h1>
           <h2 className="counter-value">{this.state.value}</h2>
 
           <div className="buttons">
-            <button className="counter-button" onClick={this.handleDecrement}>-</button>
-            <button className="counter-button" onClick={this.handleIncrement}>+</button>
+            <button className="counter-button" onClick={this.handleDecrement}>
+              <img src={RemoveImg} width={60} height={60} />
+            </button>
+            <button className="counter-button" onClick={this.handleIncrement}>
+              <img src={AddImg} width={60} height={60} />
+            </button>
           </div>
 
         </div>
