@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div className="wrapper">
         <svg id="circle-container">
-          <circle id="circle" cx="10" cy="10" r="1000vh"/>
+          <circle id="circle" cx="10" cy="10" r="1000000px"/>
         </svg>
         <Router history={browserHistory}>
           <Route path="/" component={Counters} onEnter={requireAuth} />
