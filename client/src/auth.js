@@ -20,11 +20,17 @@ export function connect(success, error) {
     }
     ws.onerror = () => {
       console.log("websocket error");
-      error();
+      if(error) {
+        error();
+      }
     }
     ws.onclose = () => {
+      ws = null;
       console.log("websocket closed");
-      reconnect = setInterval(() => connect(success, error), 5000);
+      reconnect = setInterval(() => {
+        console.log("trying to reconnect");
+        connect(success, error);
+      }, 5000);
     }
   }
 }
