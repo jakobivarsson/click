@@ -4,6 +4,8 @@
   cursor: pointer;
   padding: 10px 0;
   user-select: none;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .statistics-link {
@@ -29,8 +31,8 @@
 }
 
 .buildings {
-  padding: 10px 20px;
-  font-size: 35px;
+  margin: 10px 20px;
+  font-size: 25px;
   text-align: left;
   color: white;
 }
