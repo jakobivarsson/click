@@ -14,10 +14,10 @@ type boltAdapter struct {
 	db *bolt.DB
 }
 
-func (ba *boltAdapter) Open() {
+func (ba *boltAdapter) Open(path string) {
 	var fileMode os.FileMode = 0600
 	var err error
-	ba.db, err = bolt.Open("click.db", fileMode, nil)
+	ba.db, err = bolt.Open(path, fileMode, nil)
 	if err != nil {
 		fmt.Println("error opening boltdb", err)
 	}

@@ -63,7 +63,7 @@ export default class Statistics extends Component {
 		const pass = localStorage.password;
 		const to = Math.round(Date.now()/1000); // convert to seconds #lerp
 		const from = to-2*DAY;
-		const url = `http://localhost:3001/stats?username=${user}&password=${pass}&from=${from}&to=${to}`;
+		const url = `https://click.armada.nu/stats?username=${user}&password=${pass}&from=${from}&to=${to}`;
 		fetch(url).then(r => r.json()).then(buildings => {
 			const clicks = buildings.map(b => {
 				const prev = this.state.clicks.find(s => s.title === b.name);

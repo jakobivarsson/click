@@ -3,10 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"golang.org/x/crypto/ssh/terminal"
 	"os"
 	"strings"
 	"syscall"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func main() {
@@ -15,24 +16,28 @@ func main() {
 		help()
 		return
 	}
+	dbPath := "click.db"
+	if len(arg) == 2 {
+		dbPath = arg[1]
+	}
 	switch arg[0] {
 	case "createuser":
-		createUser()
+		createUser(dbPath)
 	case "help":
 		help()
 	case "init":
-		initdb()
+		initdb(dbPath)
 	case "run":
-		run()
+		run(dbPath)
 	default:
 		fmt.Println("Invalid argument!")
 		help()
 	}
 }
 
-func createUser() {
+func createUser(dbPath string) {
 	DB := GetDB()
-	DB.Open()
+	DB.Open(dbPath)
 	defer DB.Close()
 	user, pass := credentials()
 	CreateUser(user, pass)
@@ -49,23 +54,27 @@ func help() {
 	fmt.Println("run       \tRuns the server")
 }
 
-func initdb() {
+func initdb(dbPath string) {
 	DB := GetDB()
-	DB.Open()
+	DB.Open(dbPath)
 	defer DB.Close()
 	DB.LogEntry("Nymble", BucketClick, 0)
 	DB.LogEntry("Nymble", BucketCount, 0)
 	DB.LogEntry("KTHB", BucketClick, 0)
 	DB.LogEntry("KTHB", BucketCount, 0)
+	DB.LogEntry("KTH Entré", BucketClick, 0)
+	DB.LogEntry("KTH Entré", BucketCount, 0)
 	DB.PrintToday("Nymble", BucketClick)
 	DB.PrintToday("Nymble", BucketCount)
 	DB.PrintToday("KTHB", BucketClick)
 	DB.PrintToday("KTHB", BucketCount)
+	DB.PrintToday("KTH Entré", BucketClick)
+	DB.PrintToday("KTH Entré", BucketCount)
 }
 
-func run() {
+func run(dbPath string) {
 	fmt.Println("Starting click server")
-	RunServer()
+	RunServer(dbPath)
 }
 
 func credentials() (string, string) {

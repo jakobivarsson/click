@@ -1,7 +1,7 @@
 let ws;
 
 function url(username, password) {
-  return `ws://localhost:3001/ws?username=${username}&password=${password}`;
+  return `wss://click.armada.nu/ws?username=${username}&password=${password}`;
 }
 
 export function connect(success, error) {
