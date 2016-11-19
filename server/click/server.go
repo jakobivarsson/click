@@ -82,9 +82,9 @@ func (s *Server) GetCounterNames() []string {
 	return keys
 }
 
-func RunServer() {
+func RunServer(dbPath string) {
 	db := GetDB()
-	db.Open()
+	db.Open(dbPath)
 	defer db.Close()
 	server = NewServer()
 	dbclient := NewDbClient(&server)
@@ -120,6 +120,8 @@ func auth(next http.Handler) http.Handler {
 		pass := query.Get("password")
 		if AuthenticateUser(user, pass) {
 			next.ServeHTTP(w, r)
+		} else {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
 		}
 	})
 }

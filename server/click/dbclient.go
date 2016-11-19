@@ -27,8 +27,7 @@ type DbClient struct {
 func NewDbClient(server *Server) *DbClient {
 	update := make(chan Message)
 	counters := make(map[string]counterValues)
-	return &DbClient{GetDB(), update, server, time.NewTicker(time.Second * 5), counters}
-	//time.Minute * 5)}
+	return &DbClient{GetDB(), update, server, time.NewTicker(time.Minute * 5), counters}
 }
 
 // Notify notifies the DbClient with e new message
