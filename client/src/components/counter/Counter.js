@@ -40,7 +40,7 @@ class Counter extends Component {
   }
   componentWillUnmount() {
     this.state.ws.send(unsubscribe(this.state.name));
-    this.state.ws.onmessage = undefined;
+    connect(ws => ws.onmessage = null);
     document.onkeydown = undefined;
   }
   handleIncrement() {
@@ -64,10 +64,10 @@ class Counter extends Component {
 
           <div className="buttons">
             <button className="counter-button" onClick={this.handleDecrement}>
-              <img src={RemoveImg} width={60} height={60} />
+              <img src={RemoveImg} width={60} height={60} alt="decrement" />
             </button>
             <button className="counter-button" onClick={this.handleIncrement}>
-              <img src={AddImg} width={60} height={60} />
+              <img src={AddImg} width={60} height={60} alt="increment" />
             </button>
           </div>
 
