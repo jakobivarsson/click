@@ -13,10 +13,11 @@
   background: none;
   outline: none;
   border: none;
-  transition: 0.5s;
+  transition: 50ms;
   color: white;
   font-size: 120px;
   font-weight: 200;
+  cursor: pointer;
 }
 
 .counter-button:active {
