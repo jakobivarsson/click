@@ -41,11 +41,9 @@ class Counter extends Component {
     document.onkeydown = undefined;
   }
   handleIncrement() {
-    this.setState({value: this.state.value++});
     this.state.ws.send(click(this.state.name, 1));
   }
   handleDecrement() {
-    this.setState({value: this.state.value--});
     this.state.ws.send(click(this.state.name, -1));
   }
   render() {
