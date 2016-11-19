@@ -6,6 +6,11 @@
   justify-content: center;
 }
 
+.login, input, button {
+  font-size: 25px;
+  font-weight: 200;
+}
+
 h1 {
   font-weight: 200;
   margin: 5px 0;
@@ -21,20 +26,12 @@ textarea:focus, input:focus{
   outline: none;
 }
 
-.button-container {
-  height: 20px;
-  width: 50px;
-  margin: 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
 button {
+  margin: 25px 0;
   border: none;
   background-color: transparent;
   outline: none;
+  cursor: pointer;
 }
 
 .login-button {
@@ -42,54 +39,3 @@ button {
   stroke: black;
 }
 
-rect {
-  height: 100%;
-  width: 100%;
-}
-
-#login-svg {
-  z-index: 2;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  stroke-dasharray: 140;
-  stroke-dashoffset: 140;
-  cursor: pointer;
-}
-
-.login-progress {
-  animation: dash 800ms ease-in-out infinite;
-  animation-fill-mode: forwards;
-  stroke-dasharray: 35;
-}
-
-/* #login-svg:hover { */
-/*   animation: dash 600ms ease-in-out; */
-/*   animation-fill-mode: forwards; */
-/* } */
-
-@keyframes dash {
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-#circle-container {
-  z-index: -1;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-circle {
-  height: 100vh;
-  fill: #2d2d2c;
-  transition: r 500ms ease-in-out;
-}
-
-.expand {
-  r: calc(100vh * 1.5);
-}
