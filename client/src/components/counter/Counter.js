@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from '../../auth';
 import { subscribe, unsubscribe, click, UPDATE } from '../../messages';
+import BackImg from './navigate_before_white.svg';
+import { Link } from 'react-router';
 import './Counter.css';
 
 class Counter extends Component {
@@ -39,14 +41,22 @@ class Counter extends Component {
     document.onkeydown = undefined;
   }
   handleIncrement() {
+    this.setState({value: this.state.value++});
     this.state.ws.send(click(this.state.name, 1));
   }
   handleDecrement() {
+    this.setState({value: this.state.value--});
     this.state.ws.send(click(this.state.name, -1));
   }
   render() {
     return (
       <div className="counter-container">
+        <Link to="/">
+          <div className="counter-navigate">
+              <img src={BackImg} width={30} height={29} alt="back" />
+              <div>Buildings</div>
+          </div>
+        </Link>
         <div className="counter">
           <h1>{this.state.name}</h1>
           <h2 className="counter-value">{this.state.value}</h2>

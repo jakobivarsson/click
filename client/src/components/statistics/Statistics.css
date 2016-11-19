@@ -1,27 +1,45 @@
 .statistics {
-  height: 100%;
-  width: 100%;
-  background-color: white;
   color: #2d2d2c;
 }
 
 .statistics > h1 {
   padding: 0;
   margin: 20px;
+  color: #00d790;
+  font-weight: 400;
 }
 
 .statistics > h2 {
   padding: 0;
   margin: 20px;
+  font-weight: 200;
 }
 
 .statistics-numbers {
   margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.statistics-total {
+  margin: 20px;
 }
 
 .center {
+  background-color: white;
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.statistics-building {
+  border: 1px solid #00d790;
+  border-radius: 5px;
+  margin-right: 20px;
+  width: 100px;
+}
+
+.statistics-building > div {
+  margin: 10px;
 }

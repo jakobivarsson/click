@@ -55,6 +55,8 @@ class Buildings extends Component {
         <div className='buildings'>
           <h1>Buildings</h1>
           {list}
+        </div>
+        <div className='statistics-link'>
           <Link to="/statistics">Statistics</Link>
         </div>
       </div>
