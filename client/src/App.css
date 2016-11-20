@@ -1,21 +1,5 @@
-#circle-container {
-  height: 100%;
-  width: 100%;
-  z-index: -1;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-circle {
-  height: 100vh;
-  fill: #2d2d2c;
-  transition: r 500ms ease-in-out;
-}
-
-.expand {
-  r: calc(100vh * 2);
+body {
+  background-color: #2d2d2c;
 }
 
 @keyframes slide {
