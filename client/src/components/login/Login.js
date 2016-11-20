@@ -17,10 +17,6 @@ class Login extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.resetAnimation();
-  }
-
   handleUserChange(event) {
     this.setState({username: event.target.value});
   }
@@ -30,20 +26,13 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    const x = event.clientX;
-    const y = event.clientY;
     const username = this.state.username;
     const password = this.state.password;
     auth(username, password, () => {
-      this.positionRadial(x, y, '2d2d2c');
       browserHistory.push('/');
     }, () => {
       console.log('Error opening websocket');
     });
-  }
-
-  positionRadial(x, y) {
-    this.props.animate(x, y);
   }
 
   render() {
