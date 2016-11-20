@@ -42,9 +42,13 @@ export default class TimeChart extends Component {
 	formatCrosshairTitle(values) {
 		const time = new Date(values[0].x);
 		// TODO format time
+    const hours = time.getHours();
+    const hoursStr = hours < 10 ? '0' + hours : hours;
+    const minutes = time.getMinutes();
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
 		return {
 			title: 'Time',
-			value: `${time.getHours()}:${time.getMinutes()}`
+			value: `${hoursStr}:${minutesStr}`
 		};
 	}
 
