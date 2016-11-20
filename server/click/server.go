@@ -103,7 +103,6 @@ func RunServer(dbPath string) {
 }
 
 func connectionHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("New client")
 	s := websocket.Server{Handler: websocket.Handler(wsHandler)}
 	s.ServeHTTP(w, r)
 }

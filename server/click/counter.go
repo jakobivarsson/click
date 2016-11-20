@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 type Subscriber interface {
 	Notify(Message)
 }
@@ -58,7 +54,6 @@ func (c *Counter) updateValue(i int) {
 }
 
 func (c *Counter) addSubscriber(subscriber Subscriber) {
-	fmt.Println("New subscriber")
 	c.subscribers = append(c.subscribers, subscriber)
 	subscriber.Notify(Message{Type: TypeCounterUpdate, Counter: c.name, Value: c.count})
 }
@@ -72,7 +67,6 @@ func (c *Counter) removeSubscriber(subscriber Subscriber) {
 		}
 	}
 	if index > -1 {
-		fmt.Println("Client unsubscribed")
 		c.subscribers = append(c.subscribers[:index], c.subscribers[index+1:]...)
 	}
 	// close(client.Update)
