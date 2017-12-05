@@ -4,23 +4,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  transition: background-color cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 0.5;
+  animation: slide 350ms forwards;
+  transform: translateY(25px);
 }
 
 .login, input, button {
-  font-size: 25px;
-  font-weight: 200;
+  font-size: 24px;
+  font-weight: 300;
 }
 
 h1 {
-  font-weight: 200;
-  margin: 5px 0;
+  margin: 16px 0;
+  font-weight: 300;
 }
 
 input {
   display: block;
   border: none;
   background-color: transparent;
+  border-bottom: 1px solid #999;
+  margin-bottom: 8px;
 }
 
 textarea:focus, input:focus{
@@ -28,15 +33,68 @@ textarea:focus, input:focus{
 }
 
 button {
-  margin: 25px 0;
+  margin: 16px 0;
+  padding: 0;
   border: none;
   background-color: transparent;
   outline: none;
   cursor: pointer;
+  color: #aaa;
+}
+
+.button-container {
+  min-height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-button {
   fill: none;
   stroke: black;
+  transition: 0.5s;
+}
+
+.active {
+  color: black;
+}
+
+.failure {
+  animation: shake 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.card {
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.face:hover {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.error-background {
+  animation: shake 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes shake {
+  20% {
+    transform: translate3d(-2.5px, 0, 0);
+  }
+  40% {
+    transform: translate3d(0, 0, 0);
+  }
+  80% {
+    transform: translate3d(2.5px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
