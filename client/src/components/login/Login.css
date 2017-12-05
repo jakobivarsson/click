@@ -71,6 +71,7 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border-radius: 5px;
 }
 
 .face:hover {

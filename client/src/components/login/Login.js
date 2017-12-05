@@ -59,41 +59,40 @@ class Login extends Component {
     } = this.state
     return (
       <div className="login">
-          <div className={
-            "card " +
-            (loginFailed && "error-background")
-          }>
-            <h1>click</h1>
-            <input
-              placeholder="User"
-              value={this.state.username}
-              onChange={this.handleUserChange}
-              onKeyPress={e => e.key === 'Enter' && handleSubmit()}
-            />
-            <input
-              placeholder="Pass"
-              value={this.state.password}
-              onChange={this.handlePassChange}
-              type="password"
-              onKeyPress={e => e.key === 'Enter' && handleSubmit()}
-            />
+        <div className={
+          "card " +
+          (loginFailed && "error-background")
+        }>
+          <h1>click</h1>
+          <input
+            placeholder="User"
+            value={this.state.username}
+            onChange={this.handleUserChange}
+            onKeyPress={e => e.key === 'Enter' && handleSubmit()}
+          />
+          <input
+            placeholder="Pass"
+            value={this.state.password}
+            onChange={this.handlePassChange}
+            type="password"
+            onKeyPress={e => e.key === 'Enter' && handleSubmit()}
+          />
 
-            <div className="button-container" onClick={this.handleSubmit}>
-              { loading ?
-                <Indicator/> :
+          <div className="button-container" onClick={this.handleSubmit}>
+            { loading ?
+              <Indicator/> :
 
-                <button
-                  disabled={username.length > 0}
-                  className={
-                    loginFailed ? "failure" : "" +
-                    username.length > 0 ? "active" : ""
-                  }>
-                  Login
-                </button>
-              }
-            </div>
+              <button
+                className={
+                  loginFailed ? "failure" : "" +
+                  username.length > 0 ? "active" : ""
+                }>
+                Login
+              </button>
+            }
           </div>
         </div>
+      </div>
     )
   }
 }

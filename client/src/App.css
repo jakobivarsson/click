@@ -1,5 +1,5 @@
 body {
-  background-color: #1d1d1c;
+  background: rgba(113,113,76,.05);
 }
 
 @keyframes slide {
