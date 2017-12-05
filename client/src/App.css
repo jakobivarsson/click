@@ -1,8 +1,12 @@
 body {
-  background-color: #2d2d2c;
+  background: rgba(113,113,76,.05);
 }
 
 @keyframes slide {
   0% { }
-  100% { transform: translateY(0); }
+  50% { opacity: 1; }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

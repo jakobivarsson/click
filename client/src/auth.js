@@ -14,17 +14,19 @@ export function connect(success, error) {
     ws.onopen = () => success(ws);
   }
 }
-export function auth(username, password, success, error) {
-  ws = new ReconnectingWebSocket(url(username, password));
-  ws.onopen = () => {
-    localStorage.username = username;
-    localStorage.password = password;
-    success(ws);
-  };
-  ws.onerror = () => {
-    error();
-  }
-}
+export const auth = (username, password) =>
+  new Promise((resolve, reject) => {
+    ws = new ReconnectingWebSocket(url(username, password));
+    ws.onopen = () => {
+      localStorage.username = username;
+      localStorage.password = password;
+      resolve(ws);
+    };
+    ws.onerror = () => {
+      reject('Error opening websocket');
+    }
+  })
+
 
 export function loggedIn() {
   return !!localStorage.username && !!localStorage.password;
