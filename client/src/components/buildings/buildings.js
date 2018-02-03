@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import './buildings.css';
-import database from "../../utils/firebase";
+import { database, toList } from "../../utils/firebase";
 
 class Buildings extends Component {
   constructor(props) {
@@ -13,10 +13,9 @@ class Buildings extends Component {
   }
 
   componentDidMount() {
-    const self = this
     this.setState({fetching: true})
     database.ref('/buildings').on('value', snapshot => {
-      self.mapToBuildings(snapshot)
+      this.mapToBuildings(toList(snapshot.val()))
     })
   }
 
@@ -26,14 +25,17 @@ class Buildings extends Component {
 
   getBuildings(buildings) {
     return buildings.map(building =>
-      <li key={building.name} className='building'>
-        <Link to={`/buildings/${building.name}`}>{building.name}</Link>
+      <li key={building.key} className='building'>
+        <Link to={`/buildings/${building.key}`}>{building.name}</Link>
       </li>
     );
   }
 
-  mapToBuildings(obj) {
-    this.setState({buildings: obj.val().filter(building => building !== undefined).sort(), fetching: false})
+  mapToBuildings(buildings) {
+    this.setState({
+      buildings: buildings.filter(building => building !== undefined).sort(),
+      fetching: false
+    })
   }
 
   render() {
