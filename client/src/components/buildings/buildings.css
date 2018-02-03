@@ -20,6 +20,7 @@
 .buildings > ul {
   list-style: none;
   padding: 0;
+  text-align: center;
 }
 
 .buildings > h1 {
@@ -42,7 +43,7 @@ a {
 }
 
 .building:hover {
-  background-color: #e73953;
+  color: #00d790;
 }
 
 .buildings-container {
