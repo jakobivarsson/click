@@ -34,7 +34,7 @@ class Login extends Component {
   handleLogin() {
     const { username, password } = this.state
     if (username !== '' && password !== '') {
-      login(username, password)
+      login(username.toLowerCase(), password)
         .then(() => {
           this.setState({ loading: false })
           browserHistory.push('/')
