@@ -4,8 +4,8 @@ import Counters from './components/buildings/buildings';
 import Login from './components/login/Login';
 import { requireAuth } from './auth';
 import { Router, Route, browserHistory } from 'react-router';
-import Firebase from 'firebase'
 import './App.css';
+import _ from './utils/firebase'
 
 class App extends Component {
   render() {
