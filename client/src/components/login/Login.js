@@ -11,9 +11,12 @@ class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this)
 
     this.state = {
+      username: '',
+      password: '',
       loading: false,
       loginFailed: false,
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -22,19 +25,28 @@ class Login extends Component {
     }
   }
 
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
   handleLogin() {
-    login()
-      .then(() => {
-        this.setState({ loading: false })
-        browserHistory.push('/')
-      })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          loginFailed: true,
+    const { username, password } = this.state
+    if (username !== '' && password !== '') {
+      login(username, password)
+        .then(() => {
+          this.setState({ loading: false })
+          browserHistory.push('/')
         })
-        console.error(error)
-      })
+        .catch(error => {
+          this.setState({
+            loading: false,
+            loginFailed: true,
+          })
+          console.error(error)
+        })
+    }
   }
 
   render() {
@@ -42,16 +54,32 @@ class Login extends Component {
     const {
       loading,
       loginFailed,
+      username,
+      password,
     } = this.state
     return (
       <div className="login">
         <div className="card">
           <h1>click</h1>
 
+          <input
+            type='text'
+            placeholder='username'
+            name='username'
+            onKeyPress={e => e.key === 'Enter' && this.handleLogin()}
+            onChange={this.handleChange}
+            value={username}/>
+          <input
+            type='password'
+            placeholder='password'
+            name='password'
+            onKeyPress={e => e.key === 'Enter' && this.handleLogin()}
+            onChange={this.handleChange}
+            value={password}/>
+
           <div className="button-container" onClick={handleLogin}>
             { loading ?
               <Indicator/> :
-
               <button
                 className={
                   loginFailed ? "failure" : ""

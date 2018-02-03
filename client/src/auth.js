@@ -1,24 +1,19 @@
 import Firebase from 'firebase'
 
-const setUser = ({ user, token }) => {
+const setUser = ({ user, password }) => {
   localStorage.setItem('user', user)
-  localStorage.setItem('token', token)
+  localStorage.setItem('password', password)
 }
 
-export const login = () => {
-  const provider = new Firebase.auth.GoogleAuthProvider()
-  return Firebase.auth().signInWithPopup(provider)
-    .then(result => {
-      const user = result.user
-      const token = result.credential.accessToken
-      setUser({user, token})
-    })
+export const login = (user, password) => {
+  return Firebase.auth().signInWithEmailAndPassword(user, password)
+    .then(result => setUser({user, password}))
 }
 
-export const logout = () => setUser({ user: '', token: '' })
+export const logout = () => setUser({ user: '', password: '' })
 
 export function loggedIn() {
-  return !!localStorage.user && !!localStorage.token
+  return !!localStorage.user && !!localStorage.password
 }
 
 export function requireAuth(nextState, replace) {
