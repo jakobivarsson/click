@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { getCounters, COUNTERS } from '../../messages';
-import { connect } from '../../auth';
 import { Link } from 'react-router';
 import './buildings.css';
+import Indicator from './../indicators/Indicator'
+import { database, toList } from "../../utils/firebase";
 
 class Buildings extends Component {
   constructor(props) {
@@ -11,42 +11,40 @@ class Buildings extends Component {
       buildings: [],
       fetching: false
     };
-    this.fetchBuildings = this.fetchBuildings.bind(this);
-  }
-
-  fetchBuildings() {
-    connect(ws => {
-      ws.onmessage = event => {
-        const message = JSON.parse(event.data)
-        if (message.type === COUNTERS) {
-          this.setState({
-            buildings: message.counters.sort(),
-            fetching: false
-          });
-        }
-      }
-      ws.send(getCounters());
-      this.setState({fetching: true});
-    });
   }
 
   componentDidMount() {
-    this.fetchBuildings();
+    this.setState({fetching: true})
+    this.ref = database.ref('/buildings')
+    this.ref.on('value', snapshot => {
+      this.mapToBuildings(toList(snapshot.val()))
+    })
+  }
+
+  componentWillUnmount() {
+    this.ref.off()
   }
 
   getBuildings(buildings) {
     return buildings.map(building =>
-      <li key={building} className='building'>
-        <Link to={`/buildings/${building}`}>{building}</Link>
+      <li key={building.key} className='building'>
+        <Link to={`/buildings/${building.key}`}>{building.name}</Link>
       </li>
     );
+  }
+
+  mapToBuildings(buildings) {
+    this.setState({
+      buildings: buildings.filter(building => building !== undefined).sort(),
+      fetching: false
+    })
   }
 
   render() {
     const buildings = this.state.buildings;
     let list;
     if (this.state.fetching) {
-      list = <div className='loader buildings-loader' />;
+      list = <Indicator/>;
     } else {
       list = <ul>{this.getBuildings(buildings)}</ul>
     }
@@ -55,9 +53,6 @@ class Buildings extends Component {
         <div className='buildings'>
           <h1>Buildings</h1>
           {list}
-        </div>
-        <div className='statistics-link'>
-          <Link to="/statistics">Statistics</Link>
         </div>
       </div>
     );

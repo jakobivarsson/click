@@ -10,3 +10,8 @@ body {
     opacity: 1;
   }
 }
+
+.overcrowded {
+  background-color: #B33A3A;
+  color: white;
+}

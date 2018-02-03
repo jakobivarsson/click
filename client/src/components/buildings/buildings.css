@@ -58,11 +58,6 @@ a {
   animation: slide 350ms forwards;
 }
 
-.buildings-loader {
-  margin: 100px;
-  align-self: center;
-}
-
 @media screen and (max-width: 350px) {
   .buildings {
     font-size: 20px;
