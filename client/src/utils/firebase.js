@@ -1,4 +1,4 @@
-import Firebase from "firebase";
+import Firebase from "firebase"
 import { map } from 'lodash'
 
 const config = {
@@ -16,12 +16,29 @@ export const database = Firebase.database()
 
 export const saveBuilding = (building) => {
   // Get a key for the new building and write to it
-  const buildingKey = Firebase.database().ref().child('building').push().key;
-  let updates = {};
-  updates['/buildings/' + buildingKey] = building;
+  const buildingKey = Firebase.database().ref().child('building').push().key
+  let updates = {}
+  updates['/buildings/' + buildingKey] = building
 
-  return Firebase.database().ref().update(updates);
+  return Firebase.database().ref().update(updates)
 }
+
+const updateCount = increment => buildingRef => {
+  buildingRef.transaction(building => {
+    if (building) {
+      if (increment) {
+        building.count++
+      } else {
+        if (building.count > 0) building.count--
+      }
+    }
+    return building
+  })
+}
+
+export const increment = updateCount(true)
+
+export const decrement = updateCount(false)
 
 export const toList = obj => map(obj, (value, key) => ({
   key,
