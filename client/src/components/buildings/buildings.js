@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { getCounters, COUNTERS } from '../../messages';
-import { connect } from '../../auth';
 import { Link } from 'react-router';
 import './buildings.css';
+import database from "../../utils/firebase";
 
 class Buildings extends Component {
   constructor(props) {
@@ -11,35 +10,30 @@ class Buildings extends Component {
       buildings: [],
       fetching: false
     };
-    this.fetchBuildings = this.fetchBuildings.bind(this);
-  }
-
-  fetchBuildings() {
-    connect(ws => {
-      ws.onmessage = event => {
-        const message = JSON.parse(event.data)
-        if (message.type === COUNTERS) {
-          this.setState({
-            buildings: message.counters.sort(),
-            fetching: false
-          });
-        }
-      }
-      ws.send(getCounters());
-      this.setState({fetching: true});
-    });
   }
 
   componentDidMount() {
-    this.fetchBuildings();
+    const self = this
+    this.setState({fetching: true})
+    database.ref('/buildings').on('value', snapshot => {
+      self.mapToBuildings(snapshot)
+    })
+  }
+
+  componentWillUnmount() {
+    database.ref('/buildings').off()
   }
 
   getBuildings(buildings) {
     return buildings.map(building =>
-      <li key={building} className='building'>
-        <Link to={`/buildings/${building}`}>{building}</Link>
+      <li key={building.name} className='building'>
+        <Link to={`/buildings/${building.name}`}>{building.name}</Link>
       </li>
     );
+  }
+
+  mapToBuildings(obj) {
+    this.setState({buildings: obj.val().filter(building => building !== undefined).sort(), fetching: false})
   }
 
   render() {
