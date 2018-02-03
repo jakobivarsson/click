@@ -15,6 +15,10 @@
   font-weight: 300;
 }
 
+button:enabled {
+  color: #00d790;
+}
+
 h1 {
   margin: 16px 0;
   font-weight: 300;

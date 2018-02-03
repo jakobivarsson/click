@@ -83,7 +83,7 @@ class Login extends Component {
               <button
                 className={
                   loginFailed ? "failure" : ""
-                }>
+                } disabled={username === "" || password === ""}>
                 Login
               </button>
             }
