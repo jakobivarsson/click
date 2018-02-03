@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { database, saveBuilding, toList } from './../../utils/firebase'
+import {
+  database, saveBuilding, toList, deleteBuilding
+} from './../../utils/firebase'
 import Indicator from './../indicators/Indicator'
 import './Admin.css'
 
@@ -11,6 +13,8 @@ const DEFAULT_NEW_BUILDING = {
 const NO_NAME_ERROR = 'Enter a name for your building.'
 const NO_MAX_COUNT_ERROR = 'Specify how many people are' +
   'allowed in your building.'
+const DELETE_BUILDING_WARNING = 'Are you sure you wish to delete this building?'
+  + ' This CANNOT be undone.'
 
 class Admin extends Component {
   constructor(props) {
@@ -25,6 +29,7 @@ class Admin extends Component {
     this.addBuilding = this.addBuilding.bind(this)
     this.cancelBuilding = this.cancelBuilding.bind(this)
     this.renderBuilding = this.renderBuilding.bind(this)
+    this.handleDeleteBuilding = this.handleDeleteBuilding.bind(this)
   }
 
   componentDidMount() {
@@ -76,7 +81,13 @@ class Admin extends Component {
     }
   }
 
-  renderBuilding({name, count, limit}) {
+  handleDeleteBuilding(key) {
+    if (confirm(DELETE_BUILDING_WARNING)) {
+      deleteBuilding(key)
+    }
+  }
+
+  renderBuilding({name, count, limit, key}) {
     const isOvercrowded = count > limit
     const overcrowdedClass = isOvercrowded ? 'overcrowded' : ''
     return (
@@ -90,6 +101,11 @@ class Admin extends Component {
           className={'admin-building-count ' + overcrowdedClass}>
           ({count}/{limit} people) { isOvercrowded && 'WARNING: OVERCROWDED' }
         </span>
+        <button
+          className='delete'
+          onClick={() => this.handleDeleteBuilding(key)}>
+          Delete
+        </button>
       </div>
     )
   }
@@ -144,8 +160,6 @@ class Admin extends Component {
               </button>
             )
           }
-        </div>
-        <div>
         </div>
       </div>
     );

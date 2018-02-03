@@ -54,6 +54,9 @@ class Buildings extends Component {
           <h1>Buildings</h1>
           {list}
         </div>
+        <Link to='/admin'>
+          Settings
+        </Link>
       </div>
     );
   }
