@@ -11,6 +11,10 @@
   padding-right: 10px;
 }
 
+.admin-building-count {
+  margin-right: 5px;
+}
+
 .admin-container
 input {
   width: 250px;

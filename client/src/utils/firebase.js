@@ -23,6 +23,10 @@ export const saveBuilding = (building) => {
   return Firebase.database().ref().update(updates)
 }
 
+export const deleteBuilding = key => {
+  Firebase.database().ref('/buildings/' + key).remove()
+}
+
 const updateCount = increment => buildingRef => {
   buildingRef.transaction(building => {
     if (building) {

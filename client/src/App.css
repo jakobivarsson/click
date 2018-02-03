@@ -11,7 +11,13 @@ body {
   }
 }
 
-.overcrowded {
+.delete {
+  transition: all 0.2s;
+}
+
+.overcrowded,
+.delete:hover {
   background-color: #B33A3A;
   color: white;
 }
+
