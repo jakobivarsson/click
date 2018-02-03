@@ -34,7 +34,7 @@ export function connect(success, error) {
 }
 
 export function loggedIn() {
-  return !!(localStorage.user !== '' && localStorage.token !== '')
+  return !!localStorage.user && !!localStorage.token
 }
 
 export function requireAuth(nextState, replace) {
