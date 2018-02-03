@@ -24,3 +24,15 @@ export function requireAuth(nextState, replace) {
     });
   }
 }
+
+export const isAdmin = () =>
+  loggedIn() && localStorage.user === 'lava-admin@click.com'
+
+export const requireAdmin = (nextState, replace) => {
+  if (!isAdmin()) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    });
+  }
+}

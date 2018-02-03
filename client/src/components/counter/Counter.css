@@ -7,7 +7,6 @@
 
 .counter > h1 {
   text-align: center;
-  color: #00d790;
   padding-bottom: 50px;
   padding-top: 30px;
 }
@@ -35,7 +34,6 @@
   height: 100px;
   background: none;
   border: none;
-  color: white;
   cursor: pointer;
   outline: none;
   user-select: none;
@@ -54,7 +52,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 35px;
   transform: translateY(250px);
   animation: slide 350ms forwards;

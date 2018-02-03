@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
+import BackImg from './../counter/navigate_before.svg'
 import {
   database, saveBuilding, toList, deleteBuilding
 } from './../../utils/firebase'
@@ -117,13 +119,22 @@ class Admin extends Component {
       newBuilding,
     } = this.state;
     return (
-      <div className="admin-container">
+      <div className="counter-container">
         <div>
+          <Link to="/">
+            <div className="counter-navigate">
+                <img src={BackImg} width={30} height={29} alt="back" />
+                <div>Buildings</div>
+            </div>
+          </Link>
+
           <h1>Buildings</h1>
+
           { buildings.length === 0
             ? <Indicator/>
             : buildings.map(this.renderBuilding)
           }
+
           { addingBuilding
             ? (
               <div>

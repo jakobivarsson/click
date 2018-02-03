@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import './buildings.css';
 import Indicator from './../indicators/Indicator'
+import { isAdmin } from '../../auth'
 import { database, toList } from "../../utils/firebase";
 
 class Buildings extends Component {
@@ -54,9 +55,11 @@ class Buildings extends Component {
           <h1>Buildings</h1>
           {list}
         </div>
-        <Link to='/admin'>
-          Settings
-        </Link>
+        { isAdmin() &&
+          <Link to='/admin'>
+            Settings
+          </Link>
+        }
       </div>
     );
   }
