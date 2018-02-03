@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import './buildings.css';
+import Indicator from './../indicators/Indicator'
 import { database, toList } from "../../utils/firebase";
 
 class Buildings extends Component {
@@ -14,13 +15,14 @@ class Buildings extends Component {
 
   componentDidMount() {
     this.setState({fetching: true})
-    database.ref('/buildings').on('value', snapshot => {
+    this.ref = database.ref('/buildings')
+    this.ref.on('value', snapshot => {
       this.mapToBuildings(toList(snapshot.val()))
     })
   }
 
   componentWillUnmount() {
-    database.ref('/buildings').off()
+    this.ref.off()
   }
 
   getBuildings(buildings) {
@@ -42,7 +44,7 @@ class Buildings extends Component {
     const buildings = this.state.buildings;
     let list;
     if (this.state.fetching) {
-      list = <div className='loader buildings-loader' />;
+      list = <Indicator/>;
     } else {
       list = <ul>{this.getBuildings(buildings)}</ul>
     }
@@ -51,9 +53,6 @@ class Buildings extends Component {
         <div className='buildings'>
           <h1>Buildings</h1>
           {list}
-        </div>
-        <div className='statistics-link'>
-          <Link to="/statistics">Statistics</Link>
         </div>
       </div>
     );

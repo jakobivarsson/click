@@ -1,11 +1,4 @@
-import ReconnectingWebSocket from 'reconnectingwebsocket';
 import Firebase from 'firebase'
-
-let ws;
-
-function url(username, password) {
-  return `wss://click.armada.nu/ws?username=${username}&password=${password}`;
-}
 
 const setUser = ({ user, token }) => {
   localStorage.setItem('user', user)
@@ -23,15 +16,6 @@ export const login = () => {
 }
 
 export const logout = () => setUser({ user: '', token: '' })
-
-export function connect(success, error) {
-  if (ws && ws.readyState === 1) {
-    success(ws);
-  } else {
-    ws = new ReconnectingWebSocket(url(localStorage.username, localStorage.password));
-    ws.onopen = () => success(ws);
-  }
-}
 
 export function loggedIn() {
   return !!localStorage.user && !!localStorage.token

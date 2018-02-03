@@ -28,13 +28,14 @@ class Admin extends Component {
   }
 
   componentDidMount() {
-    database.ref('/buildings').on('value', snapshot => {
+    this.ref = database.ref('/buildings')
+    this.ref.on('value', snapshot => {
       this.setState({ buildings: toList(snapshot.val()) })
     })
   }
 
   componentWillUnmount() {
-    database.ref('/buildings').off()
+    this.ref.off()
   }
 
   startAddingBuilding() {
@@ -77,7 +78,7 @@ class Admin extends Component {
 
   renderBuilding({name, count, limit}) {
     const isOvercrowded = count > limit
-    const overcrowdedClass = isOvercrowded ? 'admin-overcrowded' : ''
+    const overcrowdedClass = isOvercrowded ? 'overcrowded' : ''
     return (
       <div key={name}
         className='admin-building'>

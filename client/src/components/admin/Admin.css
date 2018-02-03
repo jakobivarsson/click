@@ -11,11 +11,6 @@
   padding-right: 10px;
 }
 
-.admin-overcrowded {
-  background-color: #B33A3A;
-  color: white;
-}
-
 .admin-container
 input {
   width: 250px;
