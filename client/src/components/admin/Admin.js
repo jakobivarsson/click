@@ -28,10 +28,9 @@ class Admin extends Component {
   }
 
   componentDidMount() {
-    database.ref('/buildings').on('value', snapshot =>{
+    database.ref('/buildings').on('value', snapshot => {
       this.setState({ buildings: toList(snapshot.val()) })
-    }
-    )
+    })
   }
 
   componentWillUnmount() {
@@ -146,7 +145,6 @@ class Admin extends Component {
           }
         </div>
         <div>
-        
         </div>
       </div>
     );
