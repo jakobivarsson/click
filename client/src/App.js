@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Counter from './components/counter/Counter';
 import Counters from './components/buildings/buildings';
 import Login from './components/login/Login';
-import Statistics from './components/statistics/Statistics';
 import { requireAuth } from './auth';
 import { Router, Route, browserHistory } from 'react-router';
 import './App.css';
