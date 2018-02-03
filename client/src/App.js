@@ -5,7 +5,18 @@ import Login from './components/login/Login';
 import Statistics from './components/statistics/Statistics';
 import { requireAuth } from './auth';
 import { Router, Route, browserHistory } from 'react-router';
+import Firebase from 'firebase'
 import './App.css';
+
+const config = {
+  apiKey: "AIzaSyDbPJRWd9BcNkirK4j7G3WU_KwX7wR9MCA",
+  authDomain: "click-9971c.firebaseapp.com",
+  databaseURL: "https://click-9971c.firebaseio.com",
+  projectId: "click-9971c",
+  storageBucket: "click-9971c.appspot.com",
+  messagingSenderId: "283373064514",
+}
+Firebase.initializeApp(config)
 
 class App extends Component {
   render() {

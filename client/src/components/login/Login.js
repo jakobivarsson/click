@@ -1,96 +1,68 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
-import { auth } from '../../auth'
 import Indicator from './../indicators/Indicator'
+import { browserHistory } from 'react-router';
+import { login, loggedIn } from './../../auth'
 import './Login.css'
 
 class Login extends Component {
   constructor(props) {
     super(props)
 
-    this.handleUserChange = this.handleUserChange.bind(this)
-    this.handlePassChange = this.handlePassChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleLogin = this.handleLogin.bind(this)
 
     this.state = {
-      username: '',
-      password: '',
-      loginFailed: false,
       loading: false,
+      loginFailed: false,
     }
   }
 
-  handleUserChange(event) {
-    this.setState({
-      username: event.target.value,
-      loginFailed: false,
-    })
+  componentDidMount() {
+    if (loggedIn()) {
+      browserHistory.push('/')
+    }
   }
 
-  handlePassChange(event) {
-    this.setState({
-      password: event.target.value,
-      loginFailed: false,
-    })
-  }
-
-  handleSubmit() {
-    const username = this.state.username
-    const password = this.state.password
-    this.setState({loading: true})
-    auth(username, password)
+  handleLogin() {
+    login()
       .then(() => {
+        this.setState({ loading: false })
         browserHistory.push('/')
-        this.setState({loading: false})
       })
-      .catch(e => {
-        console.log(e)
-        this.setState({loginFailed: true})
-        this.setState({loading: false})
+      .catch(error => {
+        this.setState({
+          loading: false,
+          loginFailed: true,
+        })
+        console.error(error)
       })
   }
 
   render() {
-    const { handleSubmit } = this
+    const { handleLogin } = this
     const {
-      loginFailed,
-      username,
       loading,
+      loginFailed,
     } = this.state
     return (
       <div className="login">
-        <div className={
-          "card " +
-          (loginFailed && "error-background")
-        }>
+        <div className="card">
           <h1>click</h1>
-          <input
-            placeholder="User"
-            value={this.state.username}
-            onChange={this.handleUserChange}
-            onKeyPress={e => e.key === 'Enter' && handleSubmit()}
-          />
-          <input
-            placeholder="Pass"
-            value={this.state.password}
-            onChange={this.handlePassChange}
-            type="password"
-            onKeyPress={e => e.key === 'Enter' && handleSubmit()}
-          />
 
-          <div className="button-container" onClick={this.handleSubmit}>
+          <div className="button-container" onClick={handleLogin}>
             { loading ?
               <Indicator/> :
 
               <button
                 className={
-                  loginFailed ? "failure" : "" +
-                  username.length > 0 ? "active" : ""
+                  loginFailed ? "failure" : ""
                 }>
                 Login
               </button>
             }
           </div>
+          { loginFailed &&
+              <div>Login Failed, try again later</div>
+          }
         </div>
       </div>
     )
