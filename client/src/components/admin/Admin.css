@@ -1,0 +1,22 @@
+.admin-container {
+  padding: 25px;
+}
+
+.admin-building {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.admin-building-header {
+  padding-right: 10px;
+}
+
+.admin-overcrowded {
+  background-color: #B33A3A;
+  color: white;
+}
+
+.admin-container
+input {
+  width: 250px;
+}

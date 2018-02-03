@@ -1,4 +1,5 @@
 import Firebase from "firebase";
+import { map } from 'lodash'
 
 const config = {
   apiKey: "AIzaSyDbPJRWd9BcNkirK4j7G3WU_KwX7wR9MCA",
@@ -11,6 +12,20 @@ const config = {
 
 Firebase.initializeApp(config)
 
-const database = Firebase.database()
+export const database = Firebase.database()
+
+export const saveBuilding = (building) => {
+  // Get a key for the new building and write to it
+  const buildingKey = Firebase.database().ref().child('building').push().key;
+  let updates = {};
+  updates['/buildings/' + buildingKey] = building;
+
+  return Firebase.database().ref().update(updates);
+}
+
+export const toList = obj => map(obj, (value, key) => ({
+  key,
+  ...value
+}))
 
 export default database
