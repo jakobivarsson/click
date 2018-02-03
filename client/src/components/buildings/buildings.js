@@ -28,8 +28,10 @@ class Buildings extends Component {
 
   getBuildings(buildings) {
     return buildings.map(building =>
-      <li key={building.key} className='building'>
-        <Link to={`/buildings/${building.key}`}>{building.name}</Link>
+      <li key={building.key}>
+        <Link
+          className='building'
+          to={`/buildings/${building.key}`}>{building.name}</Link>
       </li>
     );
   }
