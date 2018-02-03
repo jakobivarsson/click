@@ -17,8 +17,7 @@ body {
 
 .overcrowded,
 .delete:hover {
-  background-color: #B33A3A;
-  color: white;
+  color: #B33A3A;
 }
 
 a {

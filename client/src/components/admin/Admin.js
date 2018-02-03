@@ -14,7 +14,7 @@ const DEFAULT_NEW_BUILDING = {
 }
 const NO_NAME_ERROR = 'Enter a name for your building.'
 const NO_MAX_COUNT_ERROR = 'Specify how many people are' +
-  'allowed in your building.'
+  ' allowed in your building.'
 const DELETE_BUILDING_WARNING = 'Are you sure you wish to delete this building?'
   + ' This CANNOT be undone.'
 
