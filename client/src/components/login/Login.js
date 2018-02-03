@@ -56,6 +56,7 @@ class Login extends Component {
       loginFailed,
       username,
       loading,
+      password
     } = this.state
     return (
       <div className="login">
@@ -85,7 +86,7 @@ class Login extends Component {
               <button
                 className={
                   loginFailed ? "failure" : "" +
-                  username.length > 0 ? "active" : ""
+                  username.length > 0 && password.length > 0 ? "active" : ""
                 }>
                 Login
               </button>

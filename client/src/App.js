@@ -15,7 +15,6 @@ class App extends Component {
           <Route path="/" component={Counters} onEnter={requireAuth} />
           <Route path="/buildings/:name" component={Counter} onEnter={requireAuth} />
           <Route path="/login" component={Login} />
-          <Route path="/statistics" component={Statistics} onEnter={requireAuth} />
         </Router>
       </div>
     );
