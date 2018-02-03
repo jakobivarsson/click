@@ -23,7 +23,6 @@
 
 .buildings > h1 {
   padding-top: 30px;
-  color: #00d790;
 }
 
 * {
@@ -34,13 +33,11 @@
   margin: 10px 20px;
   font-size: 25px;
   text-align: left;
-  color: white;
 }
 
 a {
   font-family: Lato, sans-serif;
   text-decoration: none;
-  color: white;
 }
 
 .building:hover {
@@ -62,6 +59,5 @@ a {
   .buildings {
     font-size: 20px;
     text-align: left;
-    color: white;
   }
 }

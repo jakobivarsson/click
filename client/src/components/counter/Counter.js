@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import BackImg from './navigate_before_white.svg'
-import AddImg from './add_white.svg'
-import RemoveImg from './remove_white.svg'
+import BackImg from './navigate_before.svg'
+import AddImg from './add.svg'
+import RemoveImg from './remove.svg'
 import { Link } from 'react-router'
 import './Counter.css'
 import { database, decrement, increment } from "../../utils/firebase"
