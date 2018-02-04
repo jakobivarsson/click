@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import './buildings.css';
 import Indicator from './../indicators/Indicator'
-import { isAdmin } from '../../auth'
+import { isAdmin, signOut } from '../../auth'
 import { database, toList } from "../../utils/firebase";
+
+const SIGNOUT_MESSAGE = 'Are you sure you want to sign out?'
 
 class Buildings extends Component {
   constructor(props) {
@@ -43,6 +45,13 @@ class Buildings extends Component {
     })
   }
 
+  onPressedSignOut() {
+    if (confirm(SIGNOUT_MESSAGE)) {
+      signOut()
+      browserHistory.push('/login')
+    }
+  }
+
   render() {
     const buildings = this.state.buildings;
     let list;
@@ -62,6 +71,7 @@ class Buildings extends Component {
             Settings
           </Link>
         }
+        <button onClick={() => this.onPressedSignOut()}>Sign out</button>
       </div>
     );
   }
