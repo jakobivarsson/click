@@ -7,10 +7,13 @@ const setUser = ({ user, password }) => {
 
 export const login = (user, password) => {
   return Firebase.auth().signInWithEmailAndPassword(user, password)
-    .then(result => setUser({user, password}))
+    .then(() => setUser({user, password}))
 }
 
-export const logout = () => setUser({ user: '', password: '' })
+export const signOut = () => {
+  Firebase.auth().signOut().catch(console.log)
+  localStorage.clear()
+}
 
 export function loggedIn() {
   return !!localStorage.user && !!localStorage.password
